@@ -1,3 +1,4 @@
+import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
@@ -67,19 +68,21 @@ export default function Form({ route, method }: formProps) {
     <>
       <form action={handleSubmit} className="form-container">
         <h1>{name}</h1>
-        <input
-          className="form-input"
+        <TextField
+          id="outlined-required"
+          label="Username"
           type="text"
           name="username"
-          placeholder="Username"
           required
+          sx={{ width: 300 }}
         />
-        <input
-          className="form-input"
+        <TextField
+          id="outlined-required"
+          label="Password"
           type="password"
           name="password"
-          placeholder="Password"
           required
+          sx={{ width: 300 }}
         />
         {loading && <LoadingIndicator />}
         <Submit name={name} />

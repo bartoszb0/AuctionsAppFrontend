@@ -9,8 +9,7 @@
   transform-origin: top center;
 }
 
-.form-button,
-.form-container > input {
+.form-button {
   padding: 10px;
   width: 100%;
   max-width: 300px;
@@ -22,11 +21,6 @@
   font-size: 1.2rem;
 }
 
-.form-input {
-  padding: 5px;
-  box-sizing: border-box;
-}
-
 .form-container > input:focus {
   background-color: rgb(68, 68, 68);
 }
@@ -34,6 +28,7 @@
 .form-button {
   background-color: rgb(189, 70, 169);
   color: black;
+  margin-top: 15px;
   width: 150px;
 }
 
