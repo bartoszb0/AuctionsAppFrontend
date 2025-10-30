@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 //import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
+import NewAuction from "./pages/NewAuction/NewAuction";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 
@@ -21,6 +22,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/newauction" element={<NewAuction />} />
+        {/* use protected route on new auction */}
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
