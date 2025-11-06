@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
-          path="/new"
+          path="/create"
           element={
             <ProtectedRoute>
               <NewAuction />
