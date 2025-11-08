@@ -1,36 +1,24 @@
-import { useState } from "react";
-import { useFormStatus } from "react-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  Flex,
+  Loader,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { z } from "zod";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants/constants";
 import api from "../../utils/api";
 import displayError from "../../utils/displayError";
 
-import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
-import "./Form.css";
-
 /**
  * Returns form for logging or registering the user.
  */
-
-type submitProps = {
-  name: string;
-};
-
-function Submit({ name }: submitProps) {
-  const status = useFormStatus();
-
-  return (
-    <>
-      {status.pending ? (
-        <LoadingIndicator />
-      ) : (
-        <button className="form-button" type="submit">
-          {name}
-        </button>
-      )}
-    </>
-  );
-}
 
 type formProps = {
   route: string;
@@ -38,15 +26,28 @@ type formProps = {
 };
 
 export default function Form({ route, method }: formProps) {
-  const [loading, setLoading] = useState(false);
+  const name = method === "login" ? "Login" : "Register";
   const navigate = useNavigate();
 
-  const name = method === "login" ? "Login" : "Register";
+  const schema = z.object({
+    username: z.string().min(1, "Username is required").trim().toLowerCase(),
+    password: z.string().min(1, "Password is required").trim(),
+  });
 
-  async function handleSubmit(formData: FormData) {
-    setLoading(true);
-    const username = formData.get("username")?.toString().trim().toLowerCase();
-    const password = formData.get("password")?.toString();
+  type FormFields = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const username = data.username;
+    const password = data.password;
 
     try {
       const res = await api.post(route, { username, password });
@@ -55,44 +56,56 @@ export default function Form({ route, method }: formProps) {
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         navigate("/");
       } else {
+        toast.success("Registration successful! Please log in.");
         navigate("/login");
       }
     } catch (err) {
-      displayError(err);
-    } finally {
-      setLoading(false);
+      setError("root", { message: displayError(err) });
     }
-  }
+  };
 
   return (
     <>
-      <form action={handleSubmit} className="form-container">
-        <h1>{name}</h1>
-        <input
-          className="form-input"
-          type="text"
-          name="username"
-          placeholder="Username"
-          required
-        />
-        <input
-          className="form-input"
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        {loading && <LoadingIndicator />}
-        <Submit name={name} />
-      </form>
-      <div className="formLinkDiv">
-        <Link
-          to={`/${name === "Login" ? "register" : "login"}`}
-          className="formLink"
-        >
+      <Stack mb="lg" m="xl" pl="xl" pr="xl">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextInput
+            {...register("username")}
+            error={errors.username && errors.username.message}
+            size="xl"
+            label="Username"
+            placeholder="Your username"
+          />
+          <PasswordInput
+            {...register("password")}
+            error={errors.password && errors.password.message}
+            size="xl"
+            mt="md"
+            label="Password"
+            placeholder="Your password"
+          />
+
+          {errors.root && (
+            <Text size="lg" mt="md" c="red.8">
+              {errors.root.message}
+            </Text>
+          )}
+
+          <Flex justify="center" mt="md">
+            {isSubmitting ? (
+              <Loader type="bars" mt="md" />
+            ) : (
+              <Button type="submit" size="sm" mt="md" fullWidth>
+                {name}
+              </Button>
+            )}
+          </Flex>
+        </form>
+      </Stack>
+      <Flex justify="center">
+        <Link to={`/${name === "Login" ? "register" : "login"}`}>
           {name === "Login" ? "Register" : "Login"} here
         </Link>
-      </div>
+      </Flex>
     </>
   );
 }

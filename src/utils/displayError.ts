@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 interface ErrorResponse {
   data?: {
     detail?: string;
@@ -7,7 +5,7 @@ interface ErrorResponse {
   };
 }
 
-export default function displayError(error: unknown): void {
+export default function displayError(error: unknown): string {
   console.error(error);
 
   let message = "An unexpected error occurred.";
@@ -26,7 +24,7 @@ export default function displayError(error: unknown): void {
     message = error.message;
   }
 
-  toast.error(message);
+  return message;
 }
 
 function isAxiosError(error: any): error is {

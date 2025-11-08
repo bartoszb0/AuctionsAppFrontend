@@ -1,5 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  Flex,
+  Loader,
   NumberInput,
   Select,
   Stack,
@@ -8,70 +11,64 @@ import {
   Title,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
-import dayjs from "dayjs";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { categories } from "../../categories";
+
+const schema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(50, "Name must be at most 50 characters long"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(500, "Description must be at most 500 characters long"),
+  startingPrice: z
+    .number("Number required")
+    .min(0.01, "Starting price must be at least 0.01"),
+  minimalBid: z
+    .number("Number required")
+    .min(0.01, "Minimal bid must be at least 0.01"),
+  category: z.enum(categories, { message: "Category is required" }),
+  deadline: z.string(),
+});
+
+type FormFields = z.infer<typeof schema>;
+
+// TODO displaying error on root
 
 export default function NewAuction() {
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      description: "",
-      startingPrice: "",
-      minimalBid: "",
-      category: "",
-      deadline: "",
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .max(50, "Must be 50 characters or less")
-        .required("Required"),
-      description: Yup.string()
-        .max(500, "Must be 500 characters or less")
-        .required("Required"),
-      startingPrice: Yup.number()
-        .transform((value, originalValue) =>
-          originalValue === "" || isNaN(value) ? undefined : value
-        )
-        .positive("Must be positive")
-        .required("Required"),
-      minimalBid: Yup.number()
-        .transform((value, originalValue) =>
-          originalValue === "" || isNaN(value) ? undefined : value
-        )
-        .positive("Must be positive")
-        .required("Required"),
-      category: Yup.string().required("Required"),
-      deadline: Yup.date()
-        .min(new Date(), "Must be in the future")
-        .required("Required"),
-    }),
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
   });
+
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(data);
+  };
 
   return (
     <>
       <Stack mb="lg" m="lg" pl="xl" pr="xl">
         <Title>Create new Auction</Title>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.name && formik.errors.name}
+            {...register("name")}
+            error={errors.name && errors.name.message}
             size="lg"
             label="Item Name"
             placeholder="e.g., Mousepad"
           />
           <Textarea
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.description && formik.errors.description}
+            {...register("description")}
+            error={errors.description && errors.description.message}
             size="lg"
             label="Description"
             placeholder="e.g., A brand new mousepad"
@@ -79,66 +76,79 @@ export default function NewAuction() {
             autosize
             maxRows={4}
           ></Textarea>
-          <NumberInput
+          <Controller
             name="startingPrice"
-            value={formik.values.startingPrice}
-            onChange={(value) => formik.setFieldValue("startingPrice", value)}
-            onBlur={formik.handleBlur}
-            error={formik.touched.startingPrice && formik.errors.startingPrice}
-            size="lg"
-            label="Starting Price"
-            placeholder="e.g., 10.00"
-            mt="md"
-            min={0.01}
-            decimalScale={2}
+            control={control}
+            render={({ field }) => (
+              <NumberInput
+                {...field}
+                error={errors.startingPrice && errors.startingPrice.message}
+                size="lg"
+                label="Starting Price"
+                placeholder="e.g., 10.00"
+                mt="md"
+                min={0}
+                decimalScale={2}
+              />
+            )}
           />
-          <NumberInput
+          <Controller
             name="minimalBid"
-            value={formik.values.minimalBid}
-            onChange={(value) => formik.setFieldValue("minimalBid", value)}
-            onBlur={formik.handleBlur}
-            error={formik.touched.minimalBid && formik.errors.minimalBid}
-            size="lg"
-            label="Minimal Bid"
-            placeholder="e.g., 5.00"
-            mt="md"
-            min={0.01}
-            decimalScale={2}
+            control={control}
+            render={({ field }) => (
+              <NumberInput
+                {...field}
+                error={errors.minimalBid && errors.minimalBid.message}
+                size="lg"
+                label="Minimal Bid"
+                placeholder="e.g., 5.00"
+                mt="md"
+                min={0}
+                decimalScale={2}
+              />
+            )}
           />
-          <Select
+          <Controller
             name="category"
-            value={formik.values.category}
-            onChange={(value) => formik.setFieldValue("category", value)}
-            onBlur={formik.handleBlur}
-            error={formik.touched.category && formik.errors.category}
-            size="lg"
-            label="Category"
-            placeholder="Select category"
-            mt="md"
-            data={[
-              { value: "home", label: "Home" },
-              { value: "music", label: "Music" },
-              { value: "sports", label: "Sports" },
-              { value: "electronics", label: "Electronics" },
-              { value: "fashion", label: "Fashion" },
-              { value: "other", label: "Other" },
-            ]}
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                error={errors.category && errors.category.message}
+                size="lg"
+                label="Category"
+                placeholder="Select category"
+                mt="md"
+                data={categories.map((category) => ({
+                  value: category,
+                  label: category.charAt(0).toUpperCase() + category.slice(1),
+                }))}
+              />
+            )}
           />
-          <DateTimePicker
+          <Controller
             name="deadline"
-            value={formik.values.deadline}
-            onChange={(value) => formik.setFieldValue("deadline", value)}
-            onBlur={formik.handleBlur}
-            error={formik.touched.deadline && formik.errors.deadline}
-            minDate={dayjs().add(1, "day").toDate()}
-            size="lg"
-            label="Auction deadline"
-            placeholder="Pick date and time"
-            mt="md"
+            control={control}
+            render={({ field }) => (
+              <DateTimePicker
+                {...field}
+                error={errors.deadline && errors.deadline.message}
+                size="lg"
+                label="Auction deadline"
+                placeholder="Pick date and time"
+                mt="md"
+              />
+            )}
           />
-          <Button size="lg" mt="md" type="submit">
-            Create Auction
-          </Button>
+          <Flex justify="center" mt="md">
+            {isSubmitting ? (
+              <Loader mt="md" type="bars" />
+            ) : (
+              <Button size="lg" mt="md" type="submit">
+                Create Auction
+              </Button>
+            )}
+          </Flex>
         </form>
       </Stack>
     </>
