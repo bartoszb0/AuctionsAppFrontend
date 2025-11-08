@@ -15,28 +15,37 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { categories } from "../../categories";
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(1, "Name is required")
-    .max(50, "Name must be at most 50 characters long"),
-  description: z
-    .string()
-    .min(1, "Description is required")
-    .max(500, "Description must be at most 500 characters long"),
-  startingPrice: z
-    .number("Number required")
-    .min(0.01, "Starting price must be at least 0.01"),
-  minimalBid: z
-    .number("Number required")
-    .min(0.01, "Minimal bid must be at least 0.01"),
-  category: z.enum(categories, { message: "Category is required" }),
-  deadline: z.string(),
-});
+let minDate = new Date();
+minDate.setDate(minDate.getDate() + 1);
+minDate.setHours(0, 0, 0, 0);
+
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Name is required")
+      .max(50, "Name must be at most 50 characters long"),
+    description: z
+      .string()
+      .min(1, "Description is required")
+      .max(500, "Description must be at most 500 characters long"),
+    startingPrice: z
+      .number("Number required")
+      .min(0.01, "Starting price must be at least 0.01")
+      .max(9999999.99, "Starting price must be at most 9,999,999.99"),
+    minimalBid: z
+      .number("Number required")
+      .min(0.01, "Minimal bid must be at least 0.01")
+      .max(9999999.99, "Minimal bid must be at most 9,999,999.99"),
+    category: z.enum(categories, { message: "Category is required" }),
+    deadline: z.string().min(1, "Deadline is required"),
+  })
+  .refine((data) => new Date(data.deadline) >= minDate, {
+    message: "Deadline must be at least next day",
+    path: ["deadline"],
+  });
 
 type FormFields = z.infer<typeof schema>;
-
-// TODO displaying error on root
 
 export default function NewAuction() {
   const {
@@ -46,12 +55,14 @@ export default function NewAuction() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      deadline: "",
+    },
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    console.log(data.deadline, data.category);
   };
 
   return (
@@ -88,6 +99,7 @@ export default function NewAuction() {
                 placeholder="e.g., 10.00"
                 mt="md"
                 min={0}
+                max={9999999.99}
                 decimalScale={2}
               />
             )}
@@ -104,6 +116,7 @@ export default function NewAuction() {
                 placeholder="e.g., 5.00"
                 mt="md"
                 min={0}
+                max={9999999.99}
                 decimalScale={2}
               />
             )}
@@ -133,6 +146,7 @@ export default function NewAuction() {
               <DateTimePicker
                 {...field}
                 error={errors.deadline && errors.deadline.message}
+                minDate={minDate}
                 size="lg"
                 label="Auction deadline"
                 placeholder="Pick date and time"
