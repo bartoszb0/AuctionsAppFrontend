@@ -7,14 +7,15 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants/constants";
-import api from "../../utils/api";
-import displayError from "../../utils/displayError";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/constants";
+import api from "../utils/api";
+import displayError from "../utils/displayError";
 
 /**
  * Returns form for logging or registering the user.
@@ -66,22 +67,24 @@ export default function Form({ route, method }: formProps) {
 
   return (
     <>
-      <Stack mb="lg" m="xl" pl="xl" pr="xl">
+      <Stack mt={140} maw={500} mx="auto">
+        <Stack align="center" mb="lg">
+          <Title>Auctions</Title>
+          <Title order={2}>{name}</Title>
+        </Stack>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             {...register("username")}
             error={errors.username && errors.username.message}
             size="xl"
-            label="Username"
-            placeholder="Your username"
+            placeholder="Username"
           />
           <PasswordInput
             {...register("password")}
             error={errors.password && errors.password.message}
             size="xl"
             mt="md"
-            label="Password"
-            placeholder="Your password"
+            placeholder="Password"
           />
 
           {errors.root && (
@@ -92,7 +95,7 @@ export default function Form({ route, method }: formProps) {
 
           <Flex justify="center" mt="md">
             {isSubmitting ? (
-              <Loader type="bars" mt="md" />
+              <Loader mt="md" />
             ) : (
               <Button type="submit" size="sm" mt="md" fullWidth>
                 {name}
@@ -101,7 +104,7 @@ export default function Form({ route, method }: formProps) {
           </Flex>
         </form>
       </Stack>
-      <Flex justify="center">
+      <Flex justify="center" mt="xl">
         <Link to={`/${name === "Login" ? "register" : "login"}`}>
           {name === "Login" ? "Register" : "Login"} here
         </Link>

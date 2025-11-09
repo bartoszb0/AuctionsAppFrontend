@@ -1,9 +1,9 @@
+import { Loader } from "@mantine/core";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants/constants";
-import api from "../../utils/api";
-import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/constants";
+import api from "../utils/api";
 
 /**
  * ProtectedRoute component that guards routes requiring authentication.
@@ -59,7 +59,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   };
 
   if (isAuthorized === null) {
-    return <LoadingIndicator />;
+    return <Loader />;
   }
 
   return isAuthorized ? children : <Navigate to="/login" />;

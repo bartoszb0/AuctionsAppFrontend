@@ -8,6 +8,13 @@ import App from "./App.tsx";
 const theme = createTheme({
   fontFamily: "Roboto, sans-serif",
   primaryColor: "grape",
+  components: {
+    Loader: {
+      defaultProps: {
+        type: "bars",
+      },
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(

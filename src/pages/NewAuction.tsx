@@ -13,7 +13,7 @@ import {
 import { DateTimePicker } from "@mantine/dates";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
-import { categories } from "../../categories";
+import { categories } from "../categories";
 
 let minDate = new Date();
 minDate.setDate(minDate.getDate() + 1);
@@ -62,13 +62,18 @@ export default function NewAuction() {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data.deadline, data.category);
+    console.log(data.name);
+    console.log(data.description);
+    console.log(data.startingPrice);
+    console.log(data.minimalBid);
+    console.log(data.category);
+    console.log(new Date(data.deadline).toISOString());
   };
 
   return (
     <>
-      <Stack mb="lg" m="lg" pl="xl" pr="xl">
-        <Title>Create new Auction</Title>
+      <Stack mb="lg" m="lg" pl="xl" pr="xl" maw={700} mx="auto">
+        <Title style={{ textAlign: "center" }}>Create new Auction</Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             {...register("name")}
@@ -156,7 +161,7 @@ export default function NewAuction() {
           />
           <Flex justify="center" mt="md">
             {isSubmitting ? (
-              <Loader mt="md" type="bars" />
+              <Loader mt="md" />
             ) : (
               <Button size="lg" mt="md" type="submit">
                 Create Auction
