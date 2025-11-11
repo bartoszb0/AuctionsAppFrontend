@@ -6,14 +6,19 @@ import {
   NumberInput,
   Select,
   Stack,
+  Text,
   Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import { categories } from "../categories";
+import api from "../utils/api";
+import displayError from "../utils/displayError";
 
 let minDate = new Date();
 minDate.setDate(minDate.getDate() + 1);
@@ -48,10 +53,13 @@ const schema = z
 type FormFields = z.infer<typeof schema>;
 
 export default function NewAuction() {
+  const navigate = useNavigate();
+
   const {
     control,
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -61,13 +69,20 @@ export default function NewAuction() {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data.name);
-    console.log(data.description);
-    console.log(data.startingPrice);
-    console.log(data.minimalBid);
-    console.log(data.category);
-    console.log(new Date(data.deadline).toISOString());
+    try {
+      const response = await api.post("auctions/", {
+        name: data.name,
+        description: data.description,
+        starting_price: data.startingPrice,
+        minimal_bid: data.minimalBid,
+        category: data.category,
+        deadline: data.deadline,
+      });
+      navigate(`/auctions/${response.data.id}/`, { replace: true });
+      toast.success("Auction created successfully!");
+    } catch (err) {
+      setError("root", { message: displayError(err) });
+    }
   };
 
   return (
@@ -159,6 +174,13 @@ export default function NewAuction() {
               />
             )}
           />
+
+          {errors.root && (
+            <Text size="lg" mt="md" c="red.8">
+              {errors.root.message}
+            </Text>
+          )}
+
           <Flex justify="center" mt="md">
             {isSubmitting ? (
               <Loader mt="md" />

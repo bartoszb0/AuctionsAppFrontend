@@ -3,6 +3,6 @@ export const categories = [
   "music",
   "sports",
   "electronics",
-  "fashion",
+  "clothing",
   "other",
 ] as const;

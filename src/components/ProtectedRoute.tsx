@@ -1,4 +1,4 @@
-import { Loader } from "@mantine/core";
+import { Flex, Loader } from "@mantine/core";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -59,7 +59,11 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   };
 
   if (isAuthorized === null) {
-    return <Loader />;
+    return (
+      <Flex justify="center" align="center" mt="xl">
+        <Loader />
+      </Flex>
+    );
   }
 
   return isAuthorized ? children : <Navigate to="/login" />;
