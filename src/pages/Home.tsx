@@ -1,6 +1,7 @@
 import { Flex } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Categories from "../components/Categories";
 import api from "../utils/api";
 import { isAuthenticated } from "../utils/isAuthenticated";
 
@@ -31,6 +32,7 @@ export default function Home() {
   return (
     <>
       <Flex justify="center" mt="sm" direction="column" align="center" gap="sm">
+        <Categories />
         {auth && <h3>Logged in</h3>}
         <Link to="/">home screen</Link>
         <Link to="/logout">Logout</Link>

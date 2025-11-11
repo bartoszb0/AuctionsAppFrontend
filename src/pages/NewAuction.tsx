@@ -24,32 +24,34 @@ let minDate = new Date();
 minDate.setDate(minDate.getDate() + 1);
 minDate.setHours(0, 0, 0, 0);
 
-const schema = z
-  .object({
-    name: z
-      .string()
-      .min(1, "Name is required")
-      .max(50, "Name must be at most 50 characters long"),
-    description: z
-      .string()
-      .min(1, "Description is required")
-      .max(500, "Description must be at most 500 characters long"),
-    startingPrice: z
-      .number("Number required")
-      .min(0.01, "Starting price must be at least 0.01")
-      .max(9999999.99, "Starting price must be at most 9,999,999.99"),
-    minimalBid: z
-      .number("Number required")
-      .min(0.01, "Minimal bid must be at least 0.01")
-      .max(9999999.99, "Minimal bid must be at most 9,999,999.99"),
-    category: z.enum(categories, { message: "Category is required" }),
-    deadline: z.string().min(1, "Deadline is required"),
-  })
-  .refine((data) => new Date(data.deadline) >= minDate, {
-    message: "Deadline must be at least next day",
-    path: ["deadline"],
-  });
+const validChoices = categories.map((category) => category.name);
 
+const schema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(50, "Name must be at most 50 characters long"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(500, "Description must be at most 500 characters long"),
+  startingPrice: z
+    .number("Number required")
+    .min(0.01, "Starting price must be at least 0.01")
+    .max(9999999.99, "Starting price must be at most 9,999,999.99"),
+  minimalBid: z
+    .number("Number required")
+    .min(0.01, "Minimal bid must be at least 0.01")
+    .max(9999999.99, "Minimal bid must be at most 9,999,999.99"),
+  category: z.enum(validChoices, { message: "Category is required" }),
+  deadline: z
+    .string()
+    .min(1, "Deadline is required")
+    .refine((deadline) => new Date(deadline) >= minDate, {
+      message: "Deadline must be at least next day",
+      path: ["deadline"],
+    }),
+});
 type FormFields = z.infer<typeof schema>;
 
 export default function NewAuction() {
@@ -153,8 +155,10 @@ export default function NewAuction() {
                 placeholder="Select category"
                 mt="md"
                 data={categories.map((category) => ({
-                  value: category,
-                  label: category.charAt(0).toUpperCase() + category.slice(1),
+                  value: category.name,
+                  label:
+                    category.name.charAt(0).toUpperCase() +
+                    category.name.slice(1),
                 }))}
               />
             )}
