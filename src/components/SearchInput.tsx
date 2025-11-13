@@ -1,12 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextInput } from "@mantine/core";
+import { Autocomplete, Button } from "@mantine/core";
 import SearchIcon from "@mui/icons-material/Search";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { PREVIOUS_SEARCHES_LIMIT } from "../constants/constants";
 
 export default function SearchInput() {
   const navigate = useNavigate();
+  const [previousSearches, setPreviousSearches] = useState<string[]>(() => {
+    const stored = localStorage.getItem("previousSearches");
+    return stored ? JSON.parse(stored) : [];
+  });
 
   const schema = z.object({
     query: z.string(),
@@ -14,7 +20,7 @@ export default function SearchInput() {
 
   type FormFields = z.infer<typeof schema>;
 
-  const { register, handleSubmit } = useForm<FormFields>({
+  const { control, handleSubmit } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
 
@@ -23,24 +29,41 @@ export default function SearchInput() {
     if (!searchQuery) return;
 
     navigate(`/search?query=${searchQuery}`);
+
+    setPreviousSearches((prev) => {
+      const updatedSearches = [
+        searchQuery,
+        ...prev.filter((q) => q !== searchQuery),
+      ].slice(0, PREVIOUS_SEARCHES_LIMIT);
+      localStorage.setItem("previousSearches", JSON.stringify(updatedSearches));
+      return updatedSearches;
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        size="xl"
-        placeholder="Search for auction..."
-        radius="xl"
-        mt="xl"
-        w="500"
-        {...register("query")}
-        rightSectionWidth="md"
-        rightSection={
-          <Button type="submit" radius="xl" mr="md">
-            <SearchIcon />
-          </Button>
-        }
-      ></TextInput>
+      <Controller
+        name="query"
+        control={control}
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            size="xl"
+            placeholder="Search for auction..."
+            radius="xl"
+            mt="xl"
+            w="500"
+            data={previousSearches}
+            limit={PREVIOUS_SEARCHES_LIMIT}
+            rightSectionWidth="md"
+            rightSection={
+              <Button type="submit" radius="xl" mr="md">
+                <SearchIcon />
+              </Button>
+            }
+          />
+        )}
+      />
     </form>
   );
 }
