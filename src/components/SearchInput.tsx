@@ -1,11 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Autocomplete, Button } from "@mantine/core";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
 import { PREVIOUS_SEARCHES_LIMIT } from "../constants/constants";
+
+type FormFields = {
+  query: string;
+};
 
 export default function SearchInput() {
   const navigate = useNavigate();
@@ -14,15 +16,7 @@ export default function SearchInput() {
     return stored ? JSON.parse(stored) : [];
   });
 
-  const schema = z.object({
-    query: z.string(),
-  });
-
-  type FormFields = z.infer<typeof schema>;
-
-  const { control, handleSubmit } = useForm<FormFields>({
-    resolver: zodResolver(schema),
-  });
+  const { control, handleSubmit } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = ({ query }) => {
     const searchQuery = query.trim();
