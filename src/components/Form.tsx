@@ -21,12 +21,12 @@ import displayError from "../utils/displayError";
  * Returns form for logging or registering the user.
  */
 
-type formProps = {
+type FormProps = {
   route: string;
   method: string;
 };
 
-export default function Form({ route, method }: formProps) {
+export default function Form({ route, method }: FormProps) {
   const name = method === "login" ? "Login" : "Register";
   const navigate = useNavigate();
 

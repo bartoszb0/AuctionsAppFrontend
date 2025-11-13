@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import NewAuction from "./pages/NewAuction";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
+import SearchResult from "./pages/SearchResult";
 
 function Logout() {
   localStorage.clear();
@@ -23,6 +24,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchResult />} />
         <Route path="/auctions/:auctionId" element={<Auction />} />
         <Route
           path="/create"
