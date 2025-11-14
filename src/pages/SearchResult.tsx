@@ -33,7 +33,7 @@ export default function SearchResult() {
 
   return (
     <Flex direction="column" gap="xl">
-      <SearchInput />
+      <SearchInput displayFilterButtons={true} />
       {isLoading ? <Loader /> : resultsElement}
       {!isLoading && resultsElement.length <= 0 && <h1>Nothing found</h1>}
     </Flex>

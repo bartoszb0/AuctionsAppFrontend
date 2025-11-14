@@ -9,7 +9,13 @@ type FormFields = {
   query: string;
 };
 
-export default function SearchInput() {
+type SearchInputProps = {
+  displayFilterButtons?: boolean;
+};
+
+export default function SearchInput({
+  displayFilterButtons,
+}: SearchInputProps) {
   const navigate = useNavigate();
   const [previousSearches, setPreviousSearches] = useState<string[]>(() => {
     const stored = localStorage.getItem("previousSearches");
@@ -19,8 +25,8 @@ export default function SearchInput() {
   const { control, handleSubmit } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = ({ query }) => {
+    if (!query) return;
     const searchQuery = query.trim();
-    if (!searchQuery) return;
 
     navigate(`/search?query=${searchQuery}`);
 
@@ -58,6 +64,7 @@ export default function SearchInput() {
           />
         )}
       />
+      {displayFilterButtons && <Button>filter</Button>}
     </form>
   );
 }
