@@ -1,6 +1,7 @@
 import { Flex } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
 import SearchInput from "../components/SearchInput";
 import api from "../utils/api";
@@ -23,12 +24,6 @@ export default function Home() {
     fetchAuctions();
   }, []);
 
-  const auctionsElement = auctions.map((auction: any) => (
-    <div key={auction.id}>
-      <h4>{auction.name}</h4>
-    </div>
-  ));
-
   return (
     <>
       <Flex justify="center" mt="sm" direction="column" align="center" gap="sm">
@@ -39,7 +34,7 @@ export default function Home() {
         <Link to="/logout">Logout</Link>
         <Link to="/login">Login</Link>
         <Link to="/create">Create new auction</Link>
-        {auctionsElement}
+        <AuctionsListing auctions={auctions} />
       </Flex>
     </>
   );

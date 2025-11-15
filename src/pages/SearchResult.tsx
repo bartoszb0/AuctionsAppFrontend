@@ -1,6 +1,7 @@
 import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import AuctionsListing from "../components/AuctionsListing";
 import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types";
 import api from "../utils/api";
@@ -11,10 +12,6 @@ export default function SearchResult() {
   const searchParam = searchParams.get("query");
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const resultsElement = searchResults.map((result: Auction) => {
-    return <div key={result.id}>{result.name}</div>;
-  });
 
   async function fetchAuctions() {
     try {
@@ -34,8 +31,8 @@ export default function SearchResult() {
   return (
     <Flex direction="column" gap="xl">
       <SearchInput displayFilterButtons={true} />
-      {isLoading ? <Loader /> : resultsElement}
-      {!isLoading && resultsElement.length <= 0 && <h1>Nothing found</h1>}
+      {isLoading ? <Loader /> : <AuctionsListing auctions={searchResults} />}
+      {!isLoading && searchResults.length <= 0 && <h1>Nothing found</h1>}
     </Flex>
   );
 }
