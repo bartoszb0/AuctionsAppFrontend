@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { PREVIOUS_SEARCHES_LIMIT } from "../constants/constants";
+import FilterButtons from "./FilterButtons";
 
 type FormFields = {
   query: string;
@@ -28,7 +29,7 @@ export default function SearchInput({
     if (!query) return;
     const searchQuery = query.trim();
 
-    navigate(`/search?query=${searchQuery}`);
+    navigate(`/search?search=${searchQuery}`);
 
     setPreviousSearches((prev) => {
       const updatedSearches = [
@@ -64,7 +65,7 @@ export default function SearchInput({
           />
         )}
       />
-      {displayFilterButtons && <Button>filter</Button>}
+      {displayFilterButtons && <FilterButtons />}
     </form>
   );
 }

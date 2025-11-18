@@ -9,24 +9,24 @@ import displayError from "../utils/displayError";
 
 export default function SearchResult() {
   const [searchParams] = useSearchParams();
-  const searchParam = searchParams.get("query");
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function fetchAuctions() {
-    try {
-      const response = await api.get(`auctions/?search=${searchParam}`);
-      setSearchResults(response.data);
-    } catch (err) {
-      displayError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        const response = await api.get(`auctions/?${searchParams.toString()}`);
+        setSearchResults(response.data);
+        console.log("xd");
+      } catch (err) {
+        displayError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchAuctions();
-  }, [searchParam]);
+  }, [searchParams]);
 
   return (
     <Flex direction="column" gap="xl">
