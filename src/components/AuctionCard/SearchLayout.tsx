@@ -9,7 +9,7 @@ export default function SearchLayout({
     <Flex h="100%">
       <Box w={180} h="100%" mr="md" style={{ backgroundColor: "grey" }}></Box>
 
-      <Flex direction="column" justify="space-between" w="100%">
+      <Flex direction="column" w="100%">
         <Flex justify="space-between">
           <Text size="xl" style={{ overflow: "hidden" }}>
             {auction.name}
@@ -21,7 +21,7 @@ export default function SearchLayout({
           <Text size="lg">{formatDate(auction.deadline)}</Text>
         </Flex>
 
-        <Flex justify="left">
+        <Flex justify="left" mt="xl">
           <Text size="sm">Created on: {formatDate(auction.created_on)}</Text>
         </Flex>
       </Flex>
