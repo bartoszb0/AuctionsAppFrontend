@@ -30,7 +30,11 @@ export default function SearchResult() {
   return (
     <Flex direction="column" gap="xl">
       <SearchInput displayFilterButtons={true} searchParams={searchParams} />
-      {isLoading ? <Loader /> : <AuctionsListing auctions={searchResults} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <AuctionsListing auctions={searchResults} variant="search" />
+      )}
       {!isLoading && searchResults.length <= 0 && <h1>Nothing found</h1>}
     </Flex>
   );

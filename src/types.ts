@@ -10,3 +10,8 @@ export type Auction = {
   deadline: string;
   highest_bid: string;
 };
+
+export type AuctionCardLayoutProps = {
+  auction: Auction;
+  formatDate: (date: string) => string;
+};
