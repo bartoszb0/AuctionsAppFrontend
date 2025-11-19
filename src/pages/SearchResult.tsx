@@ -17,7 +17,6 @@ export default function SearchResult() {
       try {
         const response = await api.get(`auctions/?${searchParams.toString()}`);
         setSearchResults(response.data);
-        console.log("xd");
       } catch (err) {
         displayError(err);
       } finally {
@@ -30,7 +29,7 @@ export default function SearchResult() {
 
   return (
     <Flex direction="column" gap="xl">
-      <SearchInput displayFilterButtons={true} />
+      <SearchInput displayFilterButtons={true} searchParams={searchParams} />
       {isLoading ? <Loader /> : <AuctionsListing auctions={searchResults} />}
       {!isLoading && searchResults.length <= 0 && <h1>Nothing found</h1>}
     </Flex>

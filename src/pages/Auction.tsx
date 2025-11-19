@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { z } from "zod";
 import type { Auction } from "../types";
 import api from "../utils/api";
@@ -22,18 +22,17 @@ export default function Auction() {
   const [auction, setAuction] = useState<Auction | null>(null);
 
   useEffect(() => {
+    const fetchAuction = async () => {
+      try {
+        const response = await api.get(`auctions/${auctionId}`);
+        setAuction(response.data);
+      } catch (error) {
+        console.error("Error fetching auction:", error);
+      }
+    };
+
     fetchAuction();
   }, [auctionId]);
-
-  async function fetchAuction() {
-    try {
-      const response = await api.get(`auctions/${auctionId}`);
-      console.log(response.data);
-      setAuction(response.data);
-    } catch (error) {
-      console.error("Error fetching auction:", error);
-    }
-  }
 
   const deadlineFormatted = dayjs(auction?.deadline).format(
     "MMMM DD, YYYY h:mm A"
@@ -86,9 +85,12 @@ export default function Auction() {
             <Group>{tempImg}</Group>
             <Stack gap="sm">
               <Text size="40px">{auction.name}</Text>
-              <Text>
-                {auction.category[0].toUpperCase() + auction.category.slice(1)}
-              </Text>
+              <Flex>
+                <Link to={`/search?category=${auction.category}`}>
+                  {auction.category[0].toUpperCase() +
+                    auction.category.slice(1)}
+                </Link>
+              </Flex>
               <Text>{auction.description}</Text>
               <Text>Starting Price: ${auction.starting_price}</Text>
               <Text>Minimal Bid: ${auction.minimal_bid}</Text>

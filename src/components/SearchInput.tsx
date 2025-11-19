@@ -12,10 +12,12 @@ type FormFields = {
 
 type SearchInputProps = {
   displayFilterButtons?: boolean;
+  searchParams?: URLSearchParams;
 };
 
 export default function SearchInput({
   displayFilterButtons,
+  searchParams,
 }: SearchInputProps) {
   const navigate = useNavigate();
   const [previousSearches, setPreviousSearches] = useState<string[]>(() => {
@@ -23,7 +25,11 @@ export default function SearchInput({
     return stored ? JSON.parse(stored) : [];
   });
 
-  const { control, handleSubmit } = useForm<FormFields>();
+  const { control, handleSubmit } = useForm<FormFields>({
+    defaultValues: {
+      query: searchParams?.get("search") || "",
+    },
+  });
 
   const onSubmit: SubmitHandler<FormFields> = ({ query }) => {
     if (!query) return;

@@ -11,16 +11,16 @@ export default function Home() {
   const [auth] = useState(isAuthenticated());
   const [auctions, setAuctions] = useState([]);
 
-  async function fetchAuctions() {
-    try {
-      const response = await api.get("auctions/");
-      setAuctions(response.data);
-    } catch (error) {
-      console.error("Error fetching auctions:", error);
-    }
-  }
-
   useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        const response = await api.get("auctions/");
+        setAuctions(response.data);
+      } catch (error) {
+        console.error("Error fetching auctions:", error);
+      }
+    };
+
     fetchAuctions();
   }, []);
 
