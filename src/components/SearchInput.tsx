@@ -1,10 +1,19 @@
-import { Autocomplete, Button } from "@mantine/core";
+import {
+  Autocomplete,
+  Button,
+  Checkbox,
+  Flex,
+  Group,
+  NumberInput,
+  Select,
+  Stack,
+} from "@mantine/core";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { categories } from "../categories";
 import { PREVIOUS_SEARCHES_LIMIT } from "../constants/constants";
-import FilterButtons from "./FilterButtons";
 
 type FormFields = {
   query: string;
@@ -71,7 +80,55 @@ export default function SearchInput({
           />
         )}
       />
-      {displayFilterButtons && <FilterButtons />}
+      {displayFilterButtons && (
+        <>
+          <Flex gap="xl">
+            <Stack>
+              <Group>
+                Categories
+                <ul>
+                  {categories.map((category) => (
+                    <Link to={`/search?category=${category.name}`}>
+                      {category.name[0].toUpperCase() + category.name.slice(1)}
+                    </Link>
+                  ))}
+                </ul>
+              </Group>
+
+              <Group>
+                Highest bid
+                <Flex>
+                  <NumberInput placeholder="From" />
+                  <NumberInput placeholder="To" />
+                </Flex>
+              </Group>
+
+              <Checkbox label="Show finished auctions" size="md" />
+
+              <Button>Save filters</Button>
+            </Stack>
+            <Stack>
+              <Select
+                label="Sort"
+                defaultValue="Creation Date - Newest First"
+                data={[
+                  "Creation Date - Newest First",
+                  "Creation Date - Oldest First",
+                  "Highest Bid - Low to High",
+                  "Highest Bid - High to Low",
+                  "Deadline - Ending Soonest",
+                  "Deadline - Ending Latest",
+                ]}
+              />
+              <Select
+                label="Auctions per page"
+                placeholder="add here default value after adding pagination"
+                data={["5", "10", "15", "20"]}
+              />
+            </Stack>
+          </Flex>
+        </>
+      )}
     </form>
   );
 }

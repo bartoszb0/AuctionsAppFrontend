@@ -28,7 +28,7 @@ export default function SearchResult() {
   }, [searchParams]);
 
   return (
-    <Flex direction="column" gap="xl">
+    <Flex direction="column" gap="xl" align="center">
       <SearchInput displayFilterButtons={true} searchParams={searchParams} />
       {isLoading ? (
         <Loader />
