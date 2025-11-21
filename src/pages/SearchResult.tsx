@@ -9,18 +9,16 @@ import api from "../utils/api";
 import displayError from "../utils/displayError";
 
 export default function SearchResult() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const [allAuctionsCount, setAllAuctionsCount] = useState(0);
+  const currentPage = Number(searchParams.get("page") || 1);
 
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await api.get(
-          `auctions/?${searchParams.toString()}&page=${currentPage}`
-        );
+        const response = await api.get(`auctions/?${searchParams.toString()}`);
         setAllAuctionsCount(response.data.count);
         setSearchResults(response.data.results);
       } catch (err) {
@@ -31,7 +29,7 @@ export default function SearchResult() {
     };
 
     fetchAuctions();
-  }, [searchParams, currentPage]);
+  }, [searchParams]);
 
   return (
     <Flex direction="column" gap="xl" align="center">
@@ -44,7 +42,8 @@ export default function SearchResult() {
           <PaginationComponent
             currentPage={currentPage}
             allAuctionsCount={allAuctionsCount}
-            setCurrentPage={setCurrentPage}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
           />
         </>
       )}

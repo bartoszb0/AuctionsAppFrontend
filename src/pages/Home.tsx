@@ -1,6 +1,6 @@
 import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
 import PaginationComponent from "../components/PaginationComponent";
@@ -11,17 +11,16 @@ import { isAuthenticated } from "../utils/isAuthenticated";
 export default function Home() {
   const [auth] = useState(isAuthenticated());
   const [auctions, setAuctions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [allAuctionsCount, setAllAuctionsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
-  console.log(allAuctionsCount);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page") || 1);
 
   useEffect(() => {
     const fetchAuctions = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get(`auctions/?page=${currentPage}`);
+        const response = await api.get(`auctions/?${searchParams.toString()}`);
         setAllAuctionsCount(response.data.count);
         setAuctions(response.data.results);
       } catch (error) {
@@ -52,7 +51,8 @@ export default function Home() {
             <PaginationComponent
               currentPage={currentPage}
               allAuctionsCount={allAuctionsCount}
-              setCurrentPage={setCurrentPage}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
             />
           </>
         )}

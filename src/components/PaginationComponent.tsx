@@ -1,16 +1,19 @@
 import { Pagination } from "@mantine/core";
+import type { SetURLSearchParams } from "react-router-dom";
 import { AUCTIONS_PER_PAGE } from "../constants/constants";
 
 type PaginationProps = {
   currentPage: number;
   allAuctionsCount: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 };
 
 export default function PaginationComponent({
   currentPage,
   allAuctionsCount,
-  setCurrentPage,
+  searchParams,
+  setSearchParams,
 }: PaginationProps) {
   return (
     <Pagination
@@ -18,7 +21,11 @@ export default function PaginationComponent({
       size="xl"
       value={currentPage}
       total={Math.ceil(allAuctionsCount / AUCTIONS_PER_PAGE)}
-      onChange={setCurrentPage}
+      onChange={(newPage) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("page", newPage.toString());
+        setSearchParams(params);
+      }}
     />
   );
 }

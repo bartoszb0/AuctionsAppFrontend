@@ -88,7 +88,10 @@ export default function SearchInput({
                 Categories
                 <ul>
                   {categories.map((category) => (
-                    <Link to={`/search?category=${category.name}`}>
+                    <Link
+                      key={category.name}
+                      to={`/search?category=${category.name}`}
+                    >
                       {category.name[0].toUpperCase() + category.name.slice(1)}
                     </Link>
                   ))}
