@@ -2,6 +2,7 @@ import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
+import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types";
 import api from "../utils/api";
@@ -11,12 +12,17 @@ export default function SearchResult() {
   const [searchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allAuctionsCount, setAllAuctionsCount] = useState(0);
 
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await api.get(`auctions/?${searchParams.toString()}`);
-        setSearchResults(response.data);
+        const response = await api.get(
+          `auctions/?${searchParams.toString()}&page=${currentPage}`
+        );
+        setAllAuctionsCount(response.data.count);
+        setSearchResults(response.data.results);
       } catch (err) {
         displayError(err);
       } finally {
@@ -25,7 +31,7 @@ export default function SearchResult() {
     };
 
     fetchAuctions();
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
   return (
     <Flex direction="column" gap="xl" align="center">
@@ -33,7 +39,14 @@ export default function SearchResult() {
       {isLoading ? (
         <Loader />
       ) : (
-        <AuctionsListing auctions={searchResults} variant="search" />
+        <>
+          <AuctionsListing auctions={searchResults} variant="search" />
+          <PaginationComponent
+            currentPage={currentPage}
+            allAuctionsCount={allAuctionsCount}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
       )}
       {!isLoading && searchResults.length <= 0 && <h1>Nothing found</h1>}
     </Flex>

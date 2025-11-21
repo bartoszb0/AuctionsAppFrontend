@@ -110,6 +110,7 @@ export default function SearchInput({
             <Stack>
               <Select
                 label="Sort"
+                checkIconPosition="right"
                 defaultValue="Creation Date - Newest First"
                 data={[
                   "Creation Date - Newest First",
@@ -119,11 +120,14 @@ export default function SearchInput({
                   "Deadline - Ending Soonest",
                   "Deadline - Ending Latest",
                 ]}
+                allowDeselect={false}
               />
               <Select
                 label="Auctions per page"
-                placeholder="add here default value after adding pagination"
+                checkIconPosition="right"
+                defaultValue="10"
                 data={["5", "10", "15", "20"]}
+                allowDeselect={false}
               />
             </Stack>
           </Flex>
