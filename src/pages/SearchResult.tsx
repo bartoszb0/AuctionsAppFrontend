@@ -2,6 +2,7 @@ import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
+import FilterButtons from "../components/FilterButtons";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types";
@@ -14,6 +15,8 @@ export default function SearchResult() {
   const [isLoading, setIsLoading] = useState(true);
   const [allAuctionsCount, setAllAuctionsCount] = useState(0);
   const currentPage = Number(searchParams.get("page") || 1);
+  const currentSize = Number(searchParams.get("size") || 10);
+  const currentOrdering = searchParams.get("ordering") || "-created_on";
 
   useEffect(() => {
     const fetchAuctions = async () => {
@@ -33,7 +36,13 @@ export default function SearchResult() {
 
   return (
     <Flex direction="column" gap="xl" align="center">
-      <SearchInput displayFilterButtons={true} searchParams={searchParams} />
+      <SearchInput searchParams={searchParams} />
+      <FilterButtons
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        currentSize={currentSize}
+        currentOrdering={currentOrdering}
+      />
       {isLoading ? (
         <Loader />
       ) : (
@@ -44,6 +53,7 @@ export default function SearchResult() {
             allAuctionsCount={allAuctionsCount}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
+            currentSize={currentSize}
           />
         </>
       )}

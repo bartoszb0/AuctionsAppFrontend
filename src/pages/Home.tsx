@@ -56,6 +56,7 @@ export default function Home() {
             />
           </>
         )}
+        {!isLoading && auctions.length <= 0 && <h1>Nothing found</h1>}
       </Flex>
     </>
   );

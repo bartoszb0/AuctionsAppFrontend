@@ -1,18 +1,8 @@
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  Flex,
-  Group,
-  NumberInput,
-  Select,
-  Stack,
-} from "@mantine/core";
+import { Autocomplete, Button } from "@mantine/core";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { categories } from "../categories";
+import { useNavigate } from "react-router-dom";
 import { PREVIOUS_SEARCHES_LIMIT } from "../constants/constants";
 
 type FormFields = {
@@ -20,14 +10,10 @@ type FormFields = {
 };
 
 type SearchInputProps = {
-  displayFilterButtons?: boolean;
   searchParams?: URLSearchParams;
 };
 
-export default function SearchInput({
-  displayFilterButtons,
-  searchParams,
-}: SearchInputProps) {
+export default function SearchInput({ searchParams }: SearchInputProps) {
   const navigate = useNavigate();
   const [previousSearches, setPreviousSearches] = useState<string[]>(() => {
     const stored = localStorage.getItem("previousSearches");
@@ -80,62 +66,6 @@ export default function SearchInput({
           />
         )}
       />
-      {displayFilterButtons && (
-        <>
-          <Flex gap="xl">
-            <Stack>
-              <Group>
-                Categories
-                <ul>
-                  {categories.map((category) => (
-                    <Link
-                      key={category.name}
-                      to={`/search?category=${category.name}`}
-                    >
-                      {category.name[0].toUpperCase() + category.name.slice(1)}
-                    </Link>
-                  ))}
-                </ul>
-              </Group>
-
-              <Group>
-                Highest bid
-                <Flex>
-                  <NumberInput placeholder="From" />
-                  <NumberInput placeholder="To" />
-                </Flex>
-              </Group>
-
-              <Checkbox label="Show finished auctions" size="md" />
-
-              <Button>Save filters</Button>
-            </Stack>
-            <Stack>
-              <Select
-                label="Sort"
-                checkIconPosition="right"
-                defaultValue="Creation Date - Newest First"
-                data={[
-                  "Creation Date - Newest First",
-                  "Creation Date - Oldest First",
-                  "Highest Bid - Low to High",
-                  "Highest Bid - High to Low",
-                  "Deadline - Ending Soonest",
-                  "Deadline - Ending Latest",
-                ]}
-                allowDeselect={false}
-              />
-              <Select
-                label="Auctions per page"
-                checkIconPosition="right"
-                defaultValue="10"
-                data={["5", "10", "15", "20"]}
-                allowDeselect={false}
-              />
-            </Stack>
-          </Flex>
-        </>
-      )}
     </form>
   );
 }
