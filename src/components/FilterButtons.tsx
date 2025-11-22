@@ -68,8 +68,11 @@ export default function FilterButtons({
           data={[
             { value: "-created_on", label: "Creation Date - Newest First" },
             { value: "created_on", label: "Creation Date - Oldest First" },
-            { value: "highest_bid", label: "Highest Bid - Low to High" },
-            { value: "-highest_bid", label: "Highest Bid - High to Low" },
+            { value: "highest_bid_amount", label: "Highest Bid - Low to High" },
+            {
+              value: "-highest_bid_amount",
+              label: "Highest Bid - High to Low",
+            },
             { value: "deadline", label: "Deadline - Ending Soonest" },
             { value: "-deadline", label: "Deadline - Ending Latest" },
           ]}
