@@ -5,8 +5,6 @@ export default function SearchLayout({
   auction,
   formatDate,
 }: AuctionCardLayoutProps) {
-  console.log(auction.highest_bid);
-
   return (
     <Flex h="100%">
       <Box w={180} h="100%" mr="md" style={{ backgroundColor: "grey" }}></Box>

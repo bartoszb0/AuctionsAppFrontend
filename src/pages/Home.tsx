@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
+import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
 import api from "../utils/api";
@@ -56,7 +57,7 @@ export default function Home() {
             />
           </>
         )}
-        {!isLoading && auctions.length <= 0 && <h1>Nothing found</h1>}
+        <NothingFound isLoading={isLoading} auctionArray={auctions} />
       </Flex>
     </>
   );

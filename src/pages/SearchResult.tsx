@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import FilterButtons from "../components/FilterButtons";
+import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types";
@@ -57,7 +58,7 @@ export default function SearchResult() {
           />
         </>
       )}
-      {!isLoading && searchResults.length <= 0 && <h1>Nothing found</h1>}
+      <NothingFound isLoading={isLoading} auctionArray={searchResults} />
     </Flex>
   );
 }
