@@ -1,4 +1,5 @@
-import { Flex, Loader } from "@mantine/core";
+import { Burger, Flex, Loader } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
@@ -15,9 +16,19 @@ export default function SearchResult() {
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [allAuctionsCount, setAllAuctionsCount] = useState(0);
+
   const currentPage = Number(searchParams.get("page") || 1);
   const currentSize = Number(searchParams.get("size") || 10);
   const currentOrdering = searchParams.get("ordering") || "-created_on";
+  const currentFinishedAuctions = searchParams.get("closed") === "true";
+  const currentMinBid = Number(searchParams.get("min_bid")) || "";
+  const currentMaxBid = Number(searchParams.get("max_bid")) || "";
+
+  console.log(currentMinBid);
+
+  console.log(currentMinBid);
+
+  const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
     const fetchAuctions = async () => {
@@ -37,13 +48,21 @@ export default function SearchResult() {
 
   return (
     <Flex direction="column" gap="xl" align="center">
-      <SearchInput searchParams={searchParams} />
-      <FilterButtons
-        searchParams={searchParams}
-        setSearchParams={setSearchParams}
-        currentSize={currentSize}
-        currentOrdering={currentOrdering}
-      />
+      <Flex direction="row" justify="center" align="center">
+        <SearchInput searchParams={searchParams} />
+        <Burger size="lg" mt="xl" ml="xl" opened={opened} onClick={toggle} />
+      </Flex>
+      {opened && (
+        <FilterButtons
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          currentSize={currentSize}
+          currentOrdering={currentOrdering}
+          currentFinishedAuctions={currentFinishedAuctions}
+          currentMinBid={currentMinBid}
+          currentMaxBid={currentMaxBid}
+        />
+      )}
       {isLoading ? (
         <Loader />
       ) : (

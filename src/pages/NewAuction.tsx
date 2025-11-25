@@ -123,6 +123,7 @@ export default function NewAuction() {
                 min={0}
                 max={9999999.99}
                 decimalScale={2}
+                prefix="$"
               />
             )}
           />
@@ -140,6 +141,7 @@ export default function NewAuction() {
                 min={0}
                 max={9999999.99}
                 decimalScale={2}
+                prefix="$"
               />
             )}
           />
