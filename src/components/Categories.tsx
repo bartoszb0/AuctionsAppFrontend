@@ -15,7 +15,7 @@ export default function Categories() {
         key={name}
         mt="xl"
         h="110px"
-        w="120px" // same width for all
+        w="120px"
         onClick={() => categoryRedirect(name)}
       >
         <Flex
