@@ -13,13 +13,22 @@ export default function Categories() {
     return (
       <Button
         key={name}
-        justify="center"
         mt="xl"
+        h="110px"
+        w="120px" // same width for all
         onClick={() => categoryRedirect(name)}
       >
-        <Flex justify="center" align="center" gap="5px">
+        <Flex
+          align="center"
+          justify="center"
+          direction="column"
+          h="100%"
+          w="100%"
+        >
           <Icon />
-          <h3>{name[0].toUpperCase() + name.slice(1)}</h3>
+          <h3 style={{ textAlign: "center", marginTop: "8px" }}>
+            {name[0].toUpperCase() + name.slice(1)}
+          </h3>
         </Flex>
       </Button>
     );

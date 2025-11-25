@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { z } from "zod";
+import Header from "../components/Header";
 import type { Auction } from "../types";
 import api from "../utils/api";
 
@@ -75,6 +76,7 @@ export default function Auction() {
 
   return (
     <>
+      <Header auth={false} />
       {!auction ? (
         <Flex align="center" justify="center" mt="xl">
           <Loader />

@@ -1,8 +1,9 @@
 import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
+import Header from "../components/Header";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
@@ -36,28 +37,28 @@ export default function Home() {
 
   return (
     <>
-      <Flex justify="center" mt="sm" direction="column" align="center" gap="sm">
-        <SearchInput />
-        <Categories />
-        {auth && <h3>Logged in</h3>}
-        <Link to="/">home screen</Link>
-        <Link to="/logout">Logout</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/create">Create new auction</Link>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <AuctionsListing auctions={auctions} />
-            <PaginationComponent
-              currentPage={currentPage}
-              allAuctionsCount={allAuctionsCount}
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
-            />
-          </>
-        )}
-        <NothingFound isLoading={isLoading} auctionArray={auctions} />
+      <Flex direction="column">
+        <Header auth={auth} />
+        <Flex justify="center" direction="column" align="center" gap="sm">
+          <SearchInput />
+          <Categories />
+          <Flex mt="xl" direction="column" align="center">
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <>
+                <AuctionsListing auctions={auctions} />
+                <PaginationComponent
+                  currentPage={currentPage}
+                  allAuctionsCount={allAuctionsCount}
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              </>
+            )}
+          </Flex>
+          <NothingFound isLoading={isLoading} auctionArray={auctions} />
+        </Flex>
       </Flex>
     </>
   );
