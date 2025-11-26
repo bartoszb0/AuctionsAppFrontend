@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { categories } from "../categories";
+import ImageDropzone from "../components/ImageDropzone";
 import api from "../utils/api";
 import displayError from "../utils/displayError";
 
@@ -51,6 +52,10 @@ const schema = z.object({
       message: "Deadline must be at least next day",
       path: ["deadline"],
     }),
+  files: z
+    .array(z.instanceof(File))
+    .min(1, "At least one photo is required")
+    .max(10, "Maximum 10 files allowed"),
 });
 type FormFields = z.infer<typeof schema>;
 
@@ -67,10 +72,14 @@ export default function NewAuction() {
     resolver: zodResolver(schema),
     defaultValues: {
       deadline: "",
+      files: [],
     },
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data.files);
+    return;
+
     try {
       const response = await api.post("auctions/", {
         name: data.name,
@@ -177,6 +186,18 @@ export default function NewAuction() {
                 label="Auction deadline"
                 placeholder="Pick date and time"
                 mt="md"
+              />
+            )}
+          />
+
+          <Controller
+            name="files"
+            control={control}
+            render={({ field }) => (
+              <ImageDropzone
+                files={field.value}
+                setFiles={field.onChange}
+                errors={errors}
               />
             )}
           />

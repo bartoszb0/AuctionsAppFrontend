@@ -11,31 +11,17 @@ export default function Categories() {
 
   const categoriesElement = categories.map(({ name, icon: Icon }) => {
     return (
-      <Button
-        key={name}
-        mt="xl"
-        h="110px"
-        w="120px"
-        onClick={() => categoryRedirect(name)}
-      >
-        <Flex
-          align="center"
-          justify="center"
-          direction="column"
-          h="100%"
-          w="100%"
-        >
+      <Button key={name} onClick={() => categoryRedirect(name)}>
+        <Flex align="center" justify="center" gap="5px">
           <Icon />
-          <h3 style={{ textAlign: "center", marginTop: "8px" }}>
-            {name[0].toUpperCase() + name.slice(1)}
-          </h3>
+          <h3>{name[0].toUpperCase() + name.slice(1)}</h3>
         </Flex>
       </Button>
     );
   });
 
   return (
-    <Flex gap="10px" justify="center" align="center" wrap="wrap">
+    <Flex gap="10px" mt="md" justify="center" align="center" wrap="wrap">
       {categoriesElement}
     </Flex>
   );
