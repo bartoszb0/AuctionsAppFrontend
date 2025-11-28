@@ -9,10 +9,12 @@ export type Auction = {
   category: string;
   deadline: string;
   highest_bid: string;
-  images: {
-    id: number;
-    image: string;
-  }[];
+  images: Image[];
+};
+
+export type Image = {
+  id: number;
+  image: string;
 };
 
 export type AuctionCardLayoutProps = {

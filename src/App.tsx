@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Auction from "./pages/Auction";
+import Auction from "./pages/Auction/Auction";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewAuction from "./pages/NewAuction";

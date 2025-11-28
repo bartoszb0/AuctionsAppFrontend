@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { z } from "zod";
-import Header from "../components/Header";
-import type { Auction } from "../types";
-import api from "../utils/api";
+import Header from "../../components/Header";
+import type { Auction } from "../../types";
+import api from "../../utils/api";
+import AuctionCarousel from "./AuctionCarousel";
 
 export default function Auction() {
   const { auctionId } = useParams();
@@ -36,12 +37,6 @@ export default function Auction() {
 
   const deadlineFormatted = dayjs(auction?.deadline).format(
     "MMMM DD, YYYY h:mm A"
-  );
-
-  const tempImg = (
-    <div
-      style={{ width: "300px", minHeight: "300px", backgroundColor: "grey" }}
-    ></div>
   );
 
   const x = 50;
@@ -83,14 +78,8 @@ export default function Auction() {
       ) : (
         <>
           <Flex pl="xl" pr="xl" mt="xl" gap="lg">
-            <img
-              src={auction?.images[0].image}
-              style={{
-                width: "300px",
-                minHeight: "300px",
-                objectFit: "contain",
-              }}
-            />
+            <AuctionCarousel images={auction.images} />
+
             <Stack gap="sm">
               <Text size="40px">{auction.name}</Text>
               <Flex>
