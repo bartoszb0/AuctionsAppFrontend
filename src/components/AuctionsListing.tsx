@@ -1,4 +1,4 @@
-import { Flex } from "@mantine/core";
+import { SimpleGrid } from "@mantine/core";
 import type { Auction } from "../types";
 import AuctionCard from "./AuctionCard/AuctionCard";
 
@@ -11,11 +11,28 @@ export default function AuctionsListing({
   auctions,
   variant,
 }: AuctionListingProps) {
+  const gridProps =
+    variant === "search"
+      ? {
+          cols: 1,
+          spacing: "xs",
+          verticalSpacing: "sm",
+          w: "90%",
+          maw: "1000px",
+        }
+      : {
+          cols: { base: 1, sm: 2, lg: 3 },
+          spacing: "lg",
+          verticalSpacing: "sm",
+          w: "100%",
+          maw: "1000px",
+        };
+
   return (
-    <Flex justify="center" maw="1200" wrap="wrap" gap="sm">
+    <SimpleGrid {...gridProps}>
       {auctions.map((auction: Auction) => (
         <AuctionCard key={auction.id} auction={auction} variant={variant} />
       ))}
-    </Flex>
+    </SimpleGrid>
   );
 }

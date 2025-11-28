@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import FilterButtons from "../components/FilterButtons";
+import Header from "../components/Header";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
@@ -47,37 +48,40 @@ export default function SearchResult() {
   }, [searchParams]);
 
   return (
-    <Flex direction="column" gap="xl" align="center">
-      <Flex direction="row" justify="center" align="center">
-        <SearchInput searchParams={searchParams} />
-        <Burger size="lg" mt="xl" ml="xl" opened={opened} onClick={toggle} />
-      </Flex>
-      {opened && (
-        <FilterButtons
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          currentSize={currentSize}
-          currentOrdering={currentOrdering}
-          currentFinishedAuctions={currentFinishedAuctions}
-          currentMinBid={currentMinBid}
-          currentMaxBid={currentMaxBid}
-        />
-      )}
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <AuctionsListing auctions={searchResults} variant="search" />
-          <PaginationComponent
-            currentPage={currentPage}
-            allAuctionsCount={allAuctionsCount}
+    <>
+      <Header auth={true} />
+      <Flex direction="column" gap="xl" align="center">
+        <Flex direction="row" justify="center" align="center">
+          <SearchInput searchParams={searchParams} />
+          <Burger size="lg" mt="xl" ml="xl" opened={opened} onClick={toggle} />
+        </Flex>
+        {opened && (
+          <FilterButtons
             searchParams={searchParams}
             setSearchParams={setSearchParams}
             currentSize={currentSize}
+            currentOrdering={currentOrdering}
+            currentFinishedAuctions={currentFinishedAuctions}
+            currentMinBid={currentMinBid}
+            currentMaxBid={currentMaxBid}
           />
-        </>
-      )}
-      <NothingFound isLoading={isLoading} auctionArray={searchResults} />
-    </Flex>
+        )}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <AuctionsListing auctions={searchResults} variant="search" />
+            <PaginationComponent
+              currentPage={currentPage}
+              allAuctionsCount={allAuctionsCount}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+              currentSize={currentSize}
+            />
+          </>
+        )}
+        <NothingFound isLoading={isLoading} auctionArray={searchResults} />
+      </Flex>
+    </>
   );
 }

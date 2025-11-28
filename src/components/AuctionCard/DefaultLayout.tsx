@@ -7,8 +7,25 @@ export default function DefaultLayout({
 }: AuctionCardLayoutProps) {
   return (
     <>
-      <Box h={180} w="100%" mb="xs" style={{ backgroundColor: "grey" }}></Box>
-
+      <Box
+        w="100%"
+        h={230}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={auction.images[0].image}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            objectFit: "contain",
+          }}
+        />
+      </Box>
       <Flex justify="space-between" mt="5px">
         <Text size="lg" style={{ overflow: "hidden" }}>
           {auction.name}

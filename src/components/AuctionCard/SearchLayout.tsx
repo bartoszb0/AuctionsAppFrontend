@@ -6,8 +6,26 @@ export default function SearchLayout({
   formatDate,
 }: AuctionCardLayoutProps) {
   return (
-    <Flex h="100%">
-      <Box w={180} h="100%" mr="md" style={{ backgroundColor: "grey" }}></Box>
+    <Flex>
+      <Box
+        w={300}
+        mr="md"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={auction.images[0].image}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "120px",
+            objectFit: "contain",
+          }}
+        />
+      </Box>
 
       <Flex direction="column" w="100%">
         <Flex justify="space-between">

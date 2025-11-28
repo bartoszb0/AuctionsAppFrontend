@@ -28,7 +28,7 @@ export default function AuctionCard({
     <Card
       onClick={navigateToAuction}
       h={variant === "search" ? 150 : 300}
-      w={variant === "search" ? "90%" : 300}
+      w={variant === "search" ? "100%" : 300}
       style={{ cursor: "pointer" }}
     >
       {variant === "search" ? (

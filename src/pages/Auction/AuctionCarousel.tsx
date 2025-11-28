@@ -56,7 +56,7 @@ export default function AuctionCarousel({ images }: CarouselProps) {
             height: 10,
           },
         }}
-        controlSize={30}
+        controlSize={40}
         w={300}
       >
         {carouselSlides}
