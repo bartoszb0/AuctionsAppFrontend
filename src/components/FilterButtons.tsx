@@ -21,6 +21,11 @@ type FilterButtonsProps = {
   currentMaxBid: string | number;
 };
 
+type FilterFormValues = {
+  minBid?: number;
+  maxBid?: number;
+};
+
 export default function FilterButtons({
   searchParams,
   setSearchParams,
@@ -47,32 +52,30 @@ export default function FilterButtons({
     setSearchParams(params);
   }
 
-  const { control, handleSubmit } = useForm<any>({});
+  const defaultMinBid = currentMinBid ? Number(currentMinBid) : undefined;
+  const defaultMaxBid = currentMaxBid ? Number(currentMaxBid) : undefined;
 
-  function onSubmit(data: any) {
+  const { control, handleSubmit } = useForm<FilterFormValues>({
+    defaultValues: {
+      minBid: defaultMinBid,
+      maxBid: defaultMaxBid,
+    },
+  });
+
+  function onSubmit(data: FilterFormValues) {
     const minBid = data.minBid;
     const maxBid = data.maxBid;
     console.log(minBid);
 
     const params = new URLSearchParams(searchParams);
 
-    if (
-      minBid === null ||
-      minBid === "" ||
-      minBid === false ||
-      minBid === undefined
-    ) {
+    if (minBid === null || minBid === undefined) {
       params.delete("min_bid");
     } else {
       params.set("min_bid", String(minBid));
     }
 
-    if (
-      maxBid === null ||
-      maxBid === "" ||
-      maxBid === false ||
-      maxBid === undefined
-    ) {
+    if (maxBid === null || maxBid === undefined) {
       params.delete("max_bid");
     } else {
       params.set("max_bid", String(maxBid));
@@ -110,7 +113,6 @@ export default function FilterButtons({
                   <NumberInput
                     {...field}
                     placeholder="From"
-                    value={currentMinBid}
                     decimalScale={2}
                     hideControls
                     prefix="$"
@@ -125,7 +127,6 @@ export default function FilterButtons({
                   <NumberInput
                     {...field}
                     placeholder="To"
-                    value={currentMaxBid}
                     decimalScale={2}
                     hideControls
                     prefix="$"
