@@ -77,18 +77,24 @@ export default function NewAuction() {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data.files);
-    return;
-
     try {
-      const response = await api.post("auctions/", {
-        name: data.name,
-        description: data.description,
-        starting_price: data.startingPrice,
-        minimal_bid: data.minimalBid,
-        category: data.category,
-        deadline: data.deadline,
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("starting_price", data.startingPrice.toString());
+      formData.append("minimal_bid", data.minimalBid.toString());
+      formData.append("category", data.category);
+      formData.append("deadline", data.deadline);
+
+      data.files.forEach((file) => {
+        formData.append("uploaded_images", file);
       });
+
+      const response = await api.post("auctions/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       navigate(`/auctions/${response.data.id}/`, { replace: true });
       toast.success("Auction created successfully!");
     } catch (err) {

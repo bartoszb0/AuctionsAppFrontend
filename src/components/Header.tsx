@@ -1,4 +1,5 @@
 import { Button, Divider, Group } from "@mantine/core";
+import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 
 type HeaderProps = {
@@ -20,6 +21,7 @@ export default function Header({ auth }: HeaderProps) {
           {auth ? (
             <>
               <Button component={Link} to="/create">
+                <AddIcon />
                 Create new auction
               </Button>
               <Button variant="default" component={Link} to="/logout">

@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Flex,
-  Group,
   Loader,
   NumberInput,
   Stack,
@@ -84,7 +83,14 @@ export default function Auction() {
       ) : (
         <>
           <Flex pl="xl" pr="xl" mt="xl" gap="lg">
-            <Group>{tempImg}</Group>
+            <img
+              src={auction?.images[0].image}
+              style={{
+                width: "300px",
+                minHeight: "300px",
+                objectFit: "contain",
+              }}
+            />
             <Stack gap="sm">
               <Text size="40px">{auction.name}</Text>
               <Flex>
