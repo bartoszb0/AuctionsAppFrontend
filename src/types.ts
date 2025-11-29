@@ -21,3 +21,13 @@ export type AuctionCardLayoutProps = {
   auction: Auction;
   formatDate: (date: string) => string;
 };
+
+export type Bid = {
+  id: number;
+  bidder: {
+    id: number;
+    username: string;
+  };
+  amount: string;
+  placed_on: string;
+};

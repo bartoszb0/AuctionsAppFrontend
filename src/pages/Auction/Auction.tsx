@@ -1,13 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Flex,
-  Loader,
-  NumberInput,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
+import { Button, Flex, Loader, NumberInput, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -17,6 +9,7 @@ import Header from "../../components/Header";
 import type { Auction } from "../../types";
 import api from "../../utils/api";
 import AuctionCarousel from "./AuctionCarousel";
+import BidsHistory from "./BidsHistory";
 
 export default function Auction() {
   const { auctionId } = useParams();
@@ -109,6 +102,7 @@ export default function Auction() {
                     size="xl"
                     error={errors.bid && errors.bid.message}
                     min={0}
+                    prefix="$"
                   />
                 )}
               />
@@ -125,12 +119,8 @@ export default function Auction() {
           </form>
 
           <hr style={{ margin: "30px", borderColor: "grey" }} />
-          <Stack>
-            <Flex justify="center">
-              <Text>Bids History</Text>
-            </Flex>
-            <Table></Table>
-          </Stack>
+
+          <BidsHistory auctionId={auction.id}></BidsHistory>
         </>
       )}
     </>
