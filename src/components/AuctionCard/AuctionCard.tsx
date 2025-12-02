@@ -7,7 +7,7 @@ import SearchLayout from "./SearchLayout";
 
 type AuctionCardProps = {
   auction: Auction;
-  variant?: "default" | "search";
+  variant?: "default" | "wide";
 };
 
 export default function AuctionCard({
@@ -27,11 +27,11 @@ export default function AuctionCard({
   return (
     <Card
       onClick={navigateToAuction}
-      h={variant === "search" ? 150 : 300}
-      w={variant === "search" ? "100%" : 300}
+      h={variant === "wide" ? 150 : 300}
+      w={variant === "wide" ? "100%" : 300}
       style={{ cursor: "pointer" }}
     >
-      {variant === "search" ? (
+      {variant === "wide" ? (
         <SearchLayout auction={auction} formatDate={formatDate} />
       ) : (
         <DefaultLayout auction={auction} formatDate={formatDate} />

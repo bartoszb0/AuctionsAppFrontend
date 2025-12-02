@@ -61,6 +61,8 @@ export default function Auction() {
     }
   };
 
+  console.log(auction);
+
   return (
     <>
       <Header auth={false} />
@@ -89,34 +91,43 @@ export default function Auction() {
             </Stack>
           </Flex>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Flex justify="center" mt="lg" gap="sm">
-              <Controller
-                name="bid"
-                control={control}
-                render={({ field }) => (
-                  <NumberInput
-                    {...field}
-                    disabled={isSubmitting}
-                    placeholder="e.g. 100"
-                    size="xl"
-                    error={errors.bid && errors.bid.message}
-                    min={0}
-                    prefix="$"
-                  />
-                )}
-              />
-              {isSubmitting ? (
-                <Flex align="center">
-                  <Loader />
-                </Flex>
-              ) : (
-                <Button type="submit" size="xl">
-                  Place Bid
-                </Button>
-              )}
+          {auction.closed ? (
+            <Flex justify="center" mt="lg">
+              <Text c="red" size="xl">
+                AUCTION CLOSED
+              </Text>
             </Flex>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Flex justify="center" mt="lg" gap="sm">
+                <Controller
+                  name="bid"
+                  control={control}
+                  render={({ field }) => (
+                    <NumberInput
+                      {...field}
+                      disabled={isSubmitting}
+                      placeholder="e.g. 100"
+                      size="xl"
+                      error={errors.bid && errors.bid.message}
+                      min={0}
+                      decimalScale={2}
+                      prefix="$"
+                    />
+                  )}
+                />
+                {isSubmitting ? (
+                  <Flex align="center">
+                    <Loader />
+                  </Flex>
+                ) : (
+                  <Button type="submit" size="xl">
+                    Place Bid
+                  </Button>
+                )}
+              </Flex>
+            </form>
+          )}
 
           <hr style={{ margin: "30px", borderColor: "grey" }} />
 

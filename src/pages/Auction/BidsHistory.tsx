@@ -1,6 +1,7 @@
 import { Button, Loader, Stack, Table, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Bid } from "../../types";
 import api from "../../utils/api";
 
@@ -49,8 +50,10 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
 
     return (
       <Table.Tr key={bid.id}>
-        <Table.Td>{bid.bidder.username}</Table.Td>
-        <Table.Td>{bid.amount}</Table.Td>
+        <Table.Td>
+          <Link to={`/user/${bid.bidder.id}`}>{bid.bidder.username}</Link>
+        </Table.Td>
+        <Table.Td>${bid.amount}</Table.Td>
         <Table.Td>{formattedDate}</Table.Td>
       </Table.Tr>
     );

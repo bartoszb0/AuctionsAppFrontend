@@ -70,7 +70,7 @@ export default function SearchResult() {
           <Loader />
         ) : (
           <>
-            <AuctionsListing auctions={searchResults} variant="search" />
+            <AuctionsListing auctions={searchResults} variant="wide" />
             <PaginationComponent
               currentPage={currentPage}
               allAuctionsCount={allAuctionsCount}

@@ -4,7 +4,7 @@ import AuctionCard from "./AuctionCard/AuctionCard";
 
 type AuctionListingProps = {
   auctions: Auction[];
-  variant?: "search";
+  variant?: "wide";
 };
 
 export default function AuctionsListing({
@@ -12,7 +12,7 @@ export default function AuctionsListing({
   variant,
 }: AuctionListingProps) {
   const gridProps =
-    variant === "search"
+    variant === "wide"
       ? {
           cols: 1,
           spacing: "xs",

@@ -2,6 +2,7 @@ export type Auction = {
   id: number;
   name: string;
   description: string;
+  author: User;
   starting_price: string;
   minimal_bid: string;
   created_on: string;
@@ -24,10 +25,16 @@ export type AuctionCardLayoutProps = {
 
 export type Bid = {
   id: number;
-  bidder: {
-    id: number;
-    username: string;
-  };
+  bidder: User;
   amount: string;
   placed_on: string;
+};
+
+export type User = {
+  id: number;
+  username: string;
+};
+
+export type UserProfile = User & {
+  auctions: Auction[];
 };

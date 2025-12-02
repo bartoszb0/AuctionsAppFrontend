@@ -39,8 +39,9 @@ export default function SearchLayout({
           <Text size="lg">{formatDate(auction.deadline)}</Text>
         </Flex>
 
-        <Flex justify="left" mt="xl">
+        <Flex justify="space-between" mt="xl">
           <Text size="sm">Created on: {formatDate(auction.created_on)}</Text>
+          {auction.closed && <Text c="red">CLOSED</Text>}
         </Flex>
       </Flex>
     </Flex>
