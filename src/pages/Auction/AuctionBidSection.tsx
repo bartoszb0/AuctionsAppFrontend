@@ -20,8 +20,8 @@ export default function AuctionBidSection({
   setHighestBidAmount,
   auth,
 }: AuctionBidSectionProps) {
-  const highestBidAmount = new Decimal(auction.highest_bid); // musze to zmienic na reaktywne
-  const minimalBidAmount = new Decimal(auction.minimal_bid); // to tez
+  const highestBidAmount = new Decimal(auction.highest_bid);
+  const minimalBidAmount = new Decimal(auction.minimal_bid);
 
   const [currentMinimalBidAmount, setCurrentMinimalBidAmount] = useState(
     highestBidAmount.plus(minimalBidAmount)
@@ -64,7 +64,7 @@ export default function AuctionBidSection({
 
   return (
     <>
-      {Number(auth.userId) !== auction.author && (
+      {Number(auth.userId) !== auction.author.id && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex justify="center" mt="lg" gap="sm">
             <Controller

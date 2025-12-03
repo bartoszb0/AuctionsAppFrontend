@@ -37,28 +37,26 @@ export default function Home() {
 
   return (
     <>
-      <Flex direction="column">
-        <Header auth={auth} />
-        <Flex justify="center" direction="column" align="center" gap="sm">
-          <SearchInput />
-          <Categories />
-          <Flex mt="xl" direction="column" align="center">
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <>
-                <AuctionsListing auctions={auctions} />
-                <PaginationComponent
-                  currentPage={currentPage}
-                  allAuctionsCount={allAuctionsCount}
-                  searchParams={searchParams}
-                  setSearchParams={setSearchParams}
-                />
-              </>
-            )}
-          </Flex>
-          <NothingFound isLoading={isLoading} auctionArray={auctions} />
+      <Header auth={auth} />
+      <Flex justify="center" direction="column" align="center" gap="sm">
+        <SearchInput />
+        <Categories />
+        <Flex mt="xl" direction="column" align="center">
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <AuctionsListing auctions={auctions} />
+              <PaginationComponent
+                currentPage={currentPage}
+                allAuctionsCount={allAuctionsCount}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />
+            </>
+          )}
         </Flex>
+        <NothingFound isLoading={isLoading} auctionArray={auctions} />
       </Flex>
     </>
   );

@@ -2,7 +2,7 @@ export type Auction = {
   id: number;
   name: string;
   description: string;
-  author: number;
+  author: User;
   starting_price: string;
   minimal_bid: string;
   created_on: string;

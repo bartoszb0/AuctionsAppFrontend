@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from "@mantine/core";
+import { Flex, Group, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import type { Auction } from "../../types";
@@ -25,17 +25,24 @@ export default function AuctionDescription({
         <Stack gap="sm">
           <Text size="40px">{auction.name}</Text>
           <Flex>
+            <Link to={`/user/${auction.author.id}`}>
+              {auction.author.username}
+            </Link>
+          </Flex>
+          <Flex>
             <Link to={`/search?category=${auction.category}`}>
               {auction.category[0].toUpperCase() + auction.category.slice(1)}
             </Link>
           </Flex>
-          <Text>{auction.description}</Text>
           <Text>Starting Price: ${auction.starting_price}</Text>
           <Text>Minimal Bid: ${auction.minimal_bid}</Text>
           <Text size="xl">Current Highest Bid: ${highestBidAmount}</Text>
           <Text size="xl">Auction end: {deadlineFormatted}</Text>
         </Stack>
       </Flex>
+      <Group p="lg" bg="dark.5" mt="md" w={700}>
+        <Text style={{ overflowWrap: "anywhere" }}>{auction.description}</Text>
+      </Group>
     </>
   );
 }

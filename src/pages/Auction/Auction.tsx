@@ -42,33 +42,37 @@ export default function Auction() {
         </Flex>
       ) : (
         <>
-          <AuctionDescription
-            auction={auction}
-            highestBidAmount={highestBidAmount}
-          />
-
-          {auction.closed ? (
-            <Flex justify="center" mt="lg">
-              <Text c="red" size="xl">
-                AUCTION CLOSED
-              </Text>
-            </Flex>
-          ) : (
-            <AuctionBidSection
+          <Flex justify="center" direction="column" align="center" gap="sm">
+            <AuctionDescription
               auction={auction}
-              setBidsHistory={setBidsHistory}
-              setHighestBidAmount={setHighestBidAmount}
-              auth={auth}
+              highestBidAmount={highestBidAmount}
             />
-          )}
 
-          <hr style={{ margin: "30px", borderColor: "grey" }} />
+            {auction.closed ? (
+              <Flex justify="center" mt="lg">
+                <Text c="red" size="xl">
+                  AUCTION CLOSED
+                </Text>
+              </Flex>
+            ) : (
+              <AuctionBidSection
+                auction={auction}
+                setBidsHistory={setBidsHistory}
+                setHighestBidAmount={setHighestBidAmount}
+                auth={auth}
+              />
+            )}
 
-          <BidsHistory
-            auctionId={auction.id}
-            bidsHistory={bidsHistory}
-            setBidsHistory={setBidsHistory}
-          ></BidsHistory>
+            <hr
+              style={{ margin: "30px", borderColor: "grey", width: "100%" }}
+            />
+
+            <BidsHistory
+              auctionId={auction.id}
+              bidsHistory={bidsHistory}
+              setBidsHistory={setBidsHistory}
+            ></BidsHistory>
+          </Flex>
         </>
       )}
     </>
