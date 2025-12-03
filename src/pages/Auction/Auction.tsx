@@ -5,11 +5,13 @@ import Header from "../../components/Header";
 import type { Auction, Bid } from "../../types";
 import api from "../../utils/api";
 import displayError from "../../utils/displayError";
+import { isAuthenticated } from "../../utils/isAuthenticated";
 import AuctionBidSection from "./AuctionBidSection";
 import AuctionDescription from "./AuctionDescription";
 import BidsHistory from "./BidsHistory";
 
 export default function Auction() {
+  const auth = isAuthenticated();
   const { auctionId } = useParams();
   const [auction, setAuction] = useState<Auction | null>(null);
   const [highestBidAmount, setHighestBidAmount] = useState<string | null>(null);
@@ -33,7 +35,7 @@ export default function Auction() {
 
   return (
     <>
-      <Header auth={false} />
+      <Header auth={auth} />
       {!auction ? (
         <Flex align="center" justify="center" mt="xl">
           <Loader />
@@ -56,6 +58,7 @@ export default function Auction() {
               auction={auction}
               setBidsHistory={setBidsHistory}
               setHighestBidAmount={setHighestBidAmount}
+              auth={auth}
             />
           )}
 

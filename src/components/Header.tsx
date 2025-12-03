@@ -17,7 +17,7 @@ type HeaderProps = {
 };
 
 export default function Header({ auth }: HeaderProps) {
-  const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const [, setUserMenuOpened] = useState(false);
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function Header({ auth }: HeaderProps) {
 
                   <Menu.Label>Settings</Menu.Label>
                   <Menu.Item>Account settings</Menu.Item>
-                  <Menu.Item component={Link} to="/logout">
+                  <Menu.Item c="red" component={Link} to="/logout">
                     Logout
                   </Menu.Item>
                 </Menu.Dropdown>

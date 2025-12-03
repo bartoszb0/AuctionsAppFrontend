@@ -4,19 +4,21 @@ import { Decimal } from "decimal.js";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
-import type { Auction, Bid } from "../../types";
+import type { Auction, AuthStatus, Bid } from "../../types";
 import api from "../../utils/api";
 
 type AuctionBidSectionProps = {
   auction: Auction;
   setBidsHistory: React.Dispatch<React.SetStateAction<Bid[]>>;
   setHighestBidAmount: React.Dispatch<React.SetStateAction<string | null>>;
+  auth: AuthStatus;
 };
 
 export default function AuctionBidSection({
   auction,
   setBidsHistory,
   setHighestBidAmount,
+  auth,
 }: AuctionBidSectionProps) {
   const highestBidAmount = new Decimal(auction.highest_bid); // musze to zmienic na reaktywne
   const minimalBidAmount = new Decimal(auction.minimal_bid); // to tez
@@ -61,34 +63,38 @@ export default function AuctionBidSection({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex justify="center" mt="lg" gap="sm">
-        <Controller
-          name="amount"
-          control={control}
-          render={({ field }) => (
-            <NumberInput
-              {...field}
-              disabled={isSubmitting}
-              placeholder="e.g. 100"
-              size="xl"
-              error={errors.amount && errors.amount.message}
-              min={0}
-              decimalScale={2}
-              prefix="$"
+    <>
+      {Number(auth.userId) !== auction.author && (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex justify="center" mt="lg" gap="sm">
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <NumberInput
+                  {...field}
+                  disabled={isSubmitting}
+                  placeholder="e.g. 100"
+                  size="xl"
+                  error={errors.amount && errors.amount.message}
+                  min={0}
+                  decimalScale={2}
+                  prefix="$"
+                />
+              )}
             />
-          )}
-        />
-        {isSubmitting ? (
-          <Flex align="center">
-            <Loader />
+            {isSubmitting ? (
+              <Flex align="center">
+                <Loader />
+              </Flex>
+            ) : (
+              <Button type="submit" size="xl">
+                Place Bid
+              </Button>
+            )}
           </Flex>
-        ) : (
-          <Button type="submit" size="xl">
-            Place Bid
-          </Button>
-        )}
-      </Flex>
-    </form>
+        </form>
+      )}
+    </>
   );
 }
