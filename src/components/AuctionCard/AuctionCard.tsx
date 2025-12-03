@@ -1,6 +1,6 @@
 import { Card } from "@mantine/core";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { Auction } from "../../types";
 import DefaultLayout from "./DefaultLayout";
 import SearchLayout from "./SearchLayout";
@@ -14,19 +14,14 @@ export default function AuctionCard({
   auction,
   variant = "default",
 }: AuctionCardProps) {
-  const navigate = useNavigate();
-
-  function navigateToAuction() {
-    navigate(`/auctions/${auction.id}`);
-  }
-
   function formatDate(date: string) {
     return dayjs(date).format("DD MMM h:mm A");
   }
 
   return (
     <Card
-      onClick={navigateToAuction}
+      component={Link}
+      to={`/auctions/${auction.id}`}
       h={variant === "wide" ? 150 : 300}
       w={variant === "wide" ? "100%" : 300}
       style={{ cursor: "pointer" }}

@@ -58,7 +58,9 @@ export default function Header({ auth }: HeaderProps) {
                   </Menu.Item>
 
                   <Menu.Label>Auctions</Menu.Label>
-                  <Menu.Item>Followed user's auctions</Menu.Item>
+                  <Menu.Item component={Link} to={"/followed/"}>
+                    Followed user's auctions
+                  </Menu.Item>
 
                   <Menu.Label>Reviews</Menu.Label>
                   <Menu.Item>My reviews</Menu.Item>

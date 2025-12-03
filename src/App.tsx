@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auction from "./pages/Auction/Auction";
+import FollowedUsersAuction from "./pages/FollowedUsersAuctions";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewAuction from "./pages/NewAuction";
@@ -25,6 +26,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/followed" element={<FollowedUsersAuction />} />
         <Route path="/search" element={<SearchResult />} />
         <Route path="/auctions/:auctionId" element={<Auction />} />
         <Route path="/user/:userId" element={<UserProfile />} />

@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@mantine/core";
+import { Link } from "react-router-dom";
 import type { AuctionCardLayoutProps } from "../../types";
 
 export default function SearchLayout({
@@ -35,7 +36,10 @@ export default function SearchLayout({
           <Text size="xl">${auction.highest_bid}</Text>
         </Flex>
 
-        <Flex justify="right">
+        <Flex justify="space-between">
+          <Link to={`/user/${auction.author.id}`}>
+            {auction.author.username}
+          </Link>
           <Text size="lg">{formatDate(auction.deadline)}</Text>
         </Flex>
 
