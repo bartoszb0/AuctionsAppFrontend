@@ -1,4 +1,4 @@
-import { Button, Loader, Stack, Table, Text } from "@mantine/core";
+import { Button, Flex, Loader, Stack, Table, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,13 +7,19 @@ import api from "../../utils/api";
 
 type BidsHistoryProps = {
   auctionId: number;
+  bidsHistory: Bid[] | null;
+  setBidsHistory: React.Dispatch<React.SetStateAction<Bid[]>>;
 };
 
-export default function BidsHistory({ auctionId }: BidsHistoryProps) {
-  const [bidsHistory, setBidsHistory] = useState<Bid[] | null>(null);
+export default function BidsHistory({
+  auctionId,
+  bidsHistory,
+  setBidsHistory,
+}: BidsHistoryProps) {
   const [moreBidsAvailable, setMoreBidsAvailable] = useState<string | null>(
     null
   );
+  const [loadingBids, setLoadingBids] = useState(true);
   const [loadingMoreBids, setLoadingMoreBids] = useState(false);
 
   async function fetchBids(fetchMoreUrl?: string) {
@@ -26,7 +32,13 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
       if (!fetchMoreUrl) {
         setBidsHistory(response.data.results);
       } else {
-        setBidsHistory((prev) => [...(prev ?? []), ...response.data.results]);
+        setBidsHistory((prev) => {
+          const newUniqueBids = response.data.results.filter(
+            (bid: Bid) => !prev.some((existing) => existing.id === bid.id)
+          );
+
+          return [...prev, ...newUniqueBids];
+        });
       }
 
       if (!response.data.next) {
@@ -37,6 +49,7 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
     } catch (error) {
       console.error("Error fetching bids:", error);
     } finally {
+      setLoadingBids(false);
       setLoadingMoreBids(false);
     }
   }
@@ -61,46 +74,45 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
 
   return (
     <>
-      {bidsElement && bidsElement.length > 0 ? (
-        <>
-          <Stack align="center" mb="xl">
-            <Text mb="md" size="xl">
-              Bids History
-            </Text>
-
-            <Table
-              w={800}
-              align="center"
-              striped
-              highlightOnHover
-              captionSide="top"
-            >
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Bidder</Table.Th>
-                  <Table.Th>Amount</Table.Th>
-                  <Table.Th>Placed on</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>{bidsElement}</Table.Tbody>
-            </Table>
-            {moreBidsAvailable &&
-              (loadingMoreBids ? (
-                <Loader />
-              ) : (
-                <Button
-                  variant="default"
-                  onClick={() => fetchBids(moreBidsAvailable)}
-                >
-                  Show more bids
-                </Button>
-              ))}
-          </Stack>
-        </>
+      {loadingBids ? (
+        <Flex align="center" justify="center" mt="xl">
+          <Loader />
+        </Flex>
+      ) : !bidsElement || bidsElement.length === 0 ? (
+        <Flex align="center" justify="center">
+          <Text mb="md" size="xl">
+            No bids found
+          </Text>
+        </Flex>
       ) : (
-        <Text style={{ textAlign: "center" }} mb="md" size="xl">
-          No bids found
-        </Text>
+        <Stack align="center" mb="xl">
+          <Text mb="md" size="xl">
+            Bids History
+          </Text>
+
+          <Table w={700} striped highlightOnHover captionSide="top">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Bidder</Table.Th>
+                <Table.Th>Amount</Table.Th>
+                <Table.Th>Placed on</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{bidsElement}</Table.Tbody>
+          </Table>
+
+          {moreBidsAvailable &&
+            (loadingMoreBids ? (
+              <Loader />
+            ) : (
+              <Button
+                variant="default"
+                onClick={() => fetchBids(moreBidsAvailable)}
+              >
+                Show more bids
+              </Button>
+            ))}
+        </Stack>
       )}
     </>
   );

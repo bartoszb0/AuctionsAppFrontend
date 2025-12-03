@@ -19,7 +19,6 @@ export default function AuctionCarousel({ images }: CarouselProps) {
 
   function closePhoto() {
     setOpenedPhoto(null);
-    console.log("lol");
     close();
   }
 
