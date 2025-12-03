@@ -64,7 +64,7 @@ export default function AuctionBidSection({
 
   return (
     <>
-      {Number(auth.userId) !== auction.author.id && (
+      {auth.isAuthenticated && Number(auth.userId) !== auction.author.id && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex justify="center" mt="lg" gap="sm">
             <Controller

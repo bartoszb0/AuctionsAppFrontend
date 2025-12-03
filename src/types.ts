@@ -37,6 +37,8 @@ export type User = {
 
 export type UserProfile = User & {
   auctions: Auction[];
+  followers: User[];
+  following: User[];
 };
 
 export type AuthStatus = {

@@ -8,9 +8,13 @@ import api from "../utils/api";
 import { isAuthenticated } from "../utils/isAuthenticated";
 
 export default function UserProfile() {
+  const auth = isAuthenticated();
   const { userId } = useParams();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followersLength, setFollowersLength] = useState(0);
+  const [followLoading, setFollowLoading] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,14 +31,44 @@ export default function UserProfile() {
     fetchUser();
   }, [userId]);
 
-  function handleFollow() {
-    console.log("follow or unfollow");
-  }
-
   function countAuctionsByStatus(isClosed: boolean) {
     if (!user || !user.auctions) return 0;
     return user.auctions.filter((auction) => auction.closed === isClosed)
       .length;
+  }
+
+  useEffect(() => {
+    if (!user) return;
+
+    setFollowersLength(user.followers.length);
+
+    if (auth.userId !== user.id) {
+      const following = user.followers.some((f) => f.id == auth.userId);
+      setIsFollowing(following);
+    }
+  }, [user, auth.userId]);
+
+  async function handleFollow() {
+    if (!user) return;
+
+    // API call to follow/unfollow
+    try {
+      setFollowLoading(true);
+      await api.post(`/users/${userId}/follow/`);
+    } catch (error) {
+      console.log(error);
+      return;
+    } finally {
+      setFollowLoading(false);
+    }
+
+    // UI update
+    if (isFollowing) {
+      setFollowersLength((prev) => prev - 1);
+    } else {
+      setFollowersLength((prev) => prev + 1);
+    }
+    setIsFollowing((prev) => !prev);
   }
 
   return (
@@ -49,10 +83,14 @@ export default function UserProfile() {
           <>
             <h1>{user.username}</h1>
             <Group>
-              <h3>Followers: X</h3>
-              <h3>Following: Y</h3>
+              <h3>Followers: {followersLength}</h3>
+              <h3>Following: {user.following.length}</h3>
             </Group>
-            <Button onClick={handleFollow}>Follow</Button>
+            {auth.isAuthenticated && auth.userId != user.id && (
+              <Button onClick={handleFollow} disabled={followLoading}>
+                {isFollowing ? "Unfollow" : "Follow"}
+              </Button>
+            )}
             <Group gap="xl" mt="xl">
               <Card>
                 <h1>0/5</h1>
