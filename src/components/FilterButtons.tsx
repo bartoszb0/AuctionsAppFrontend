@@ -86,7 +86,7 @@ export default function FilterButtons({
   }
 
   return (
-    <Flex gap="lg" justify="center" align="center">
+    <Flex gap="lg" justify="center" align="center" bg="dark.6" p="sm" bdrs="md">
       <Stack>
         <Group>
           Categories
@@ -104,8 +104,8 @@ export default function FilterButtons({
 
         <Group>
           Highest bid
-          <Flex gap="sm">
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Flex gap="sm">
               <Controller
                 name="minBid"
                 control={control}
@@ -116,6 +116,7 @@ export default function FilterButtons({
                     decimalScale={2}
                     hideControls
                     prefix="$"
+                    w={100}
                   />
                 )}
               />
@@ -130,12 +131,15 @@ export default function FilterButtons({
                     decimalScale={2}
                     hideControls
                     prefix="$"
+                    w={100}
                   />
                 )}
               />
-              <Button type="submit">Filter</Button>
-            </form>
-          </Flex>
+              <Button type="submit" w={70}>
+                Filter
+              </Button>
+            </Flex>
+          </form>
         </Group>
 
         <Checkbox
