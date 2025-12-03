@@ -11,8 +11,11 @@ import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types";
 import api from "../utils/api";
 import displayError from "../utils/displayError";
+import { isAuthenticated } from "../utils/isAuthenticated";
 
 export default function SearchResult() {
+  const auth = isAuthenticated();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<Auction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,10 +27,6 @@ export default function SearchResult() {
   const currentFinishedAuctions = searchParams.get("closed") === "true";
   const currentMinBid = Number(searchParams.get("min_bid")) || "";
   const currentMaxBid = Number(searchParams.get("max_bid")) || "";
-
-  console.log(currentMinBid);
-
-  console.log(currentMinBid);
 
   const [opened, { toggle }] = useDisclosure();
 
@@ -49,7 +48,7 @@ export default function SearchResult() {
 
   return (
     <>
-      <Header auth={true} />
+      <Header auth={auth} />
       <Flex direction="column" gap="xl" align="center">
         <Flex direction="row" justify="center" align="center">
           <SearchInput searchParams={searchParams} />

@@ -38,3 +38,9 @@ export type User = {
 export type UserProfile = User & {
   auctions: Auction[];
 };
+
+export type AuthStatus = {
+  isAuthenticated: boolean;
+  userId: number | null;
+  username: string | null;
+};

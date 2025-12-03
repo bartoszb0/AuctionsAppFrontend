@@ -1,14 +1,28 @@
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, type JwtPayload } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants/constants";
+import type { AuthStatus } from "../types";
 
-export function isAuthenticated() {
+interface MyJwtPayload extends JwtPayload {
+  user_id: number;
+  username: string;
+}
+
+export function isAuthenticated(): AuthStatus {
   const access = localStorage.getItem(ACCESS_TOKEN);
-  if (!access) return false;
+
+  if (!access) {
+    return { userId: null, isAuthenticated: false, username: null };
+  }
 
   try {
-    const { exp }: { exp: number } = jwtDecode(access);
-    return Date.now() < exp * 1000;
+    const decoded = jwtDecode<MyJwtPayload>(access);
+
+    return {
+      userId: decoded.user_id,
+      username: decoded.username,
+      isAuthenticated: Date.now() < (decoded.exp || 0) * 1000,
+    };
   } catch {
-    return false;
+    return { userId: null, isAuthenticated: false, username: null };
   }
 }
