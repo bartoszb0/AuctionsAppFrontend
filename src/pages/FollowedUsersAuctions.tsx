@@ -15,9 +15,7 @@ export default function FollowedUsersAuction() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [allAuctionsCount, setAllAuctionsCount] = useState(0);
-
   const currentPage = Number(searchParams.get("page") || 1);
-  console.log(allAuctionsCount);
 
   useEffect(() => {
     const fetchAuctions = async () => {

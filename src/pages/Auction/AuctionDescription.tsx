@@ -36,10 +36,10 @@ export default function AuctionDescription({
           </Flex>
           <Text>Starting Price: ${auction.starting_price}</Text>
           <Text>Minimal Bid: ${auction.minimal_bid}</Text>
-          <Text size="xl">
+          <Text component="span" size="xl">
             Current Highest Bid: <Text c="grape">${highestBidAmount}</Text>
           </Text>
-          <Text size="xl">
+          <Text component="span" size="xl">
             Auction end: <Text c="grape">{deadlineFormatted}</Text>
           </Text>
         </Stack>

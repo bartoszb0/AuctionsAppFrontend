@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@mantine/core";
-import { Link } from "react-router-dom";
 import type { AuctionCardLayoutProps } from "../../types";
 
 export default function WideLayout({
@@ -37,9 +36,7 @@ export default function WideLayout({
         </Flex>
 
         <Flex justify="space-between">
-          <Link to={`/user/${auction.author.id}`}>
-            {auction.author.username}
-          </Link>
+          <Text c="dark.2">{auction.author.username}</Text>
           <Text size="lg">{formatDate(auction.deadline)}</Text>
         </Flex>
 
