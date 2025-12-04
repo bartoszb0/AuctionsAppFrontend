@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Group, Loader, Text } from "@mantine/core";
+import { Box, Button, Flex, Group, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
@@ -28,6 +28,7 @@ export default function UserProfile() {
           api.get(`users/${userId}/`),
           api.get(`users/${userId}/auctions/?${searchParams.toString()}`),
         ]);
+        console.log(userResponse.data);
         setUser(userResponse.data);
         setAuctions(auctionsResponse.data.results);
         setAllAuctionsCount(auctionsResponse.data.count);
@@ -40,11 +41,6 @@ export default function UserProfile() {
 
     fetchData();
   }, [userId, searchParams]);
-
-  function countAuctionsByStatus(isClosed: boolean) {
-    if (!auctions) return 0;
-    return auctions.filter((auction) => auction.closed === isClosed).length;
-  }
 
   useEffect(() => {
     if (!user) return;
@@ -107,18 +103,24 @@ export default function UserProfile() {
               </Button>
             )}
             <Group gap="xl" mt="xl">
-              <Card>
-                <h1>0/5</h1>
-                <h3>Average Rating</h3>
-              </Card>
-              <Card>
-                <h1>{countAuctionsByStatus(true)}</h1>
-                <h3>Active Auctions</h3>
-              </Card>
-              <Card>
-                <h1>{countAuctionsByStatus(false)}</h1>
-                <h3>Finished Auctions</h3>
-              </Card>
+              <Box bg="dark.5" p="sm" bdrs="sm">
+                <Text size="40px" fw={700}>
+                  5.0
+                </Text>
+                <Text>Average Rating</Text>
+              </Box>
+              <Box bg="dark.5" p="sm" bdrs="sm">
+                <Text size="40px" fw={700}>
+                  {user.open_auctions_count}
+                </Text>
+                <Text>Active Auctions</Text>
+              </Box>
+              <Box bg="dark.5" p="sm" bdrs="sm">
+                <Text size="40px" fw={700}>
+                  {user.auctions_count}
+                </Text>
+                <Text>Created Auctions</Text>
+              </Box>
             </Group>
             {auctions.length > 0 ? (
               <>

@@ -38,6 +38,8 @@ export type User = {
 export type UserProfile = User & {
   followers: User[];
   following: User[];
+  auctions_count: number;
+  open_auctions_count: number;
 };
 
 export type AuthStatus = {
