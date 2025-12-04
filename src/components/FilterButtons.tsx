@@ -40,7 +40,6 @@ export default function FilterButtons({
     paramName: string
   ) {
     const params = new URLSearchParams(searchParams);
-    console.log(value);
 
     if (value === null || value === "" || value === false) {
       params.delete(paramName);
@@ -65,7 +64,6 @@ export default function FilterButtons({
   function onSubmit(data: FilterFormValues) {
     const minBid = data.minBid;
     const maxBid = data.maxBid;
-    console.log(minBid);
 
     const params = new URLSearchParams(searchParams);
 

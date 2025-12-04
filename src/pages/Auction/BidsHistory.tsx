@@ -101,17 +101,15 @@ export default function BidsHistory({
             <Table.Tbody>{bidsElement}</Table.Tbody>
           </Table>
 
-          {moreBidsAvailable &&
-            (loadingMoreBids ? (
-              <Loader />
-            ) : (
-              <Button
-                variant="default"
-                onClick={() => fetchBids(moreBidsAvailable)}
-              >
-                Show more bids
-              </Button>
-            ))}
+          {moreBidsAvailable && (
+            <Button
+              variant="default"
+              disabled={loadingMoreBids}
+              onClick={() => fetchBids(moreBidsAvailable)}
+            >
+              Show more bids
+            </Button>
+          )}
         </Stack>
       )}
     </>

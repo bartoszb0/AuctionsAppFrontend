@@ -21,7 +21,7 @@ export default function AuctionsListing({
           maw: "1000px",
         }
       : {
-          cols: { base: 1, sm: 2, lg: 3 },
+          cols: { base: 2, md: 3 },
           spacing: "lg",
           verticalSpacing: "sm",
           w: "100%",

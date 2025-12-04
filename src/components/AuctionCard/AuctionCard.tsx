@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import type { Auction } from "../../types";
 import DefaultLayout from "./DefaultLayout";
-import SearchLayout from "./SearchLayout";
+import WideLayout from "./WideLayout";
 
 type AuctionCardProps = {
   auction: Auction;
@@ -27,7 +27,7 @@ export default function AuctionCard({
       style={{ cursor: "pointer" }}
     >
       {variant === "wide" ? (
-        <SearchLayout auction={auction} formatDate={formatDate} />
+        <WideLayout auction={auction} formatDate={formatDate} />
       ) : (
         <DefaultLayout auction={auction} formatDate={formatDate} />
       )}

@@ -19,7 +19,7 @@ export default function AuctionDescription({
 
   return (
     <>
-      <Flex pl="xl" pr="xl" mt="xl" gap="lg">
+      <Flex pl="xl" pr="xl" mt="xl" gap="xl">
         <AuctionCarousel images={auction.images} />
 
         <Stack gap="sm">
@@ -36,8 +36,12 @@ export default function AuctionDescription({
           </Flex>
           <Text>Starting Price: ${auction.starting_price}</Text>
           <Text>Minimal Bid: ${auction.minimal_bid}</Text>
-          <Text size="xl">Current Highest Bid: ${highestBidAmount}</Text>
-          <Text size="xl">Auction end: {deadlineFormatted}</Text>
+          <Text size="xl">
+            Current Highest Bid: <Text c="grape">${highestBidAmount}</Text>
+          </Text>
+          <Text size="xl">
+            Auction end: <Text c="grape">{deadlineFormatted}</Text>
+          </Text>
         </Stack>
       </Flex>
       <Group p="lg" bg="dark.5" mt="md" w={700}>

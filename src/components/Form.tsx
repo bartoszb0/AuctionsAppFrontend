@@ -69,7 +69,12 @@ export default function Form({ route, method }: FormProps) {
     <>
       <Stack mt={140} maw={500} mx="auto">
         <Stack align="center" mb="lg">
-          <Title>Auctions</Title>
+          <Link
+            to="/"
+            style={{ fontSize: "30px", color: "white", textDecoration: "none" }}
+          >
+            Auctions
+          </Link>
           <Title order={2}>{name}</Title>
         </Stack>
         <form onSubmit={handleSubmit(onSubmit)}>

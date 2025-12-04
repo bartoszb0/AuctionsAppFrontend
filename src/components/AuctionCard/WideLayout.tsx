@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@mantine/core";
 import { Link } from "react-router-dom";
 import type { AuctionCardLayoutProps } from "../../types";
 
-export default function SearchLayout({
+export default function WideLayout({
   auction,
   formatDate,
 }: AuctionCardLayoutProps) {
