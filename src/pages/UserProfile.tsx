@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Group, Loader } from "@mantine/core";
+import { Button, Card, Flex, Group, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
@@ -81,13 +81,19 @@ export default function UserProfile() {
           <h1>Profile not found</h1>
         ) : (
           <>
-            <h1>{user.username}</h1>
+            <Text size="30px" fw={500}>
+              {user.username}
+            </Text>
             <Group>
               <h3>Followers: {followersLength}</h3>
               <h3>Following: {user.following.length}</h3>
             </Group>
             {auth.isAuthenticated && auth.userId != user.id && (
-              <Button onClick={handleFollow} disabled={followLoading}>
+              <Button
+                onClick={handleFollow}
+                disabled={followLoading}
+                variant={isFollowing ? "outline" : "filled"}
+              >
                 {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             )}
