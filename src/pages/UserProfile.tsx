@@ -120,22 +120,14 @@ export default function UserProfile() {
                 <Text>Created Auctions</Text>
               </Box>
             </Group>
-            {auctions.length > 0 ? (
-              <>
-                <h1>All auctions</h1>
-                <AuctionsListing auctions={auctions} variant="wide" />
-                <PaginationComponent
-                  currentPage={currentPage}
-                  allAuctionsCount={allAuctionsCount}
-                  searchParams={searchParams}
-                  setSearchParams={setSearchParams}
-                />
-              </>
-            ) : (
-              <Text fw={600} mt="xl" p="xl" size="30px">
-                This user hasn't created any auction
-              </Text>
-            )}
+            <h1>{user.username}'s auctions</h1>
+            <AuctionsListing auctions={auctions} variant="wide" />
+            <PaginationComponent
+              currentPage={currentPage}
+              allAuctionsCount={allAuctionsCount}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
           </>
         )}
       </Flex>

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
-import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
 import type { Auction } from "../types/types";
@@ -48,10 +47,6 @@ export default function Home() {
             </>
           )}
         </Flex>
-        <NothingFound
-          isLoading={isPending}
-          auctionArray={data?.results ?? []}
-        />
       </Flex>
     </>
   );

@@ -2,7 +2,6 @@ import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
-import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import type { Auction } from "../types/types";
 import api from "../utils/api";
@@ -53,7 +52,6 @@ export default function FollowedUsersAuction() {
             />
           </>
         )}
-        <NothingFound isLoading={isLoading} auctionArray={auctions} />
       </Flex>
     </>
   );

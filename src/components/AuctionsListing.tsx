@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@mantine/core";
+import { SimpleGrid, Text } from "@mantine/core";
 import type { Auction } from "../types/types";
 import AuctionCard from "./AuctionCard/AuctionCard";
 
@@ -29,10 +29,17 @@ export default function AuctionsListing({
         };
 
   return (
-    <SimpleGrid {...gridProps}>
-      {auctions.map((auction: Auction) => (
-        <AuctionCard key={auction.id} auction={auction} variant={variant} />
-      ))}
-    </SimpleGrid>
+    <>
+      {auctions.length <= 0 && (
+        <Text fs="italic" size="xl" mt="xl">
+          No auction found
+        </Text>
+      )}
+      <SimpleGrid {...gridProps}>
+        {auctions.map((auction: Auction) => (
+          <AuctionCard key={auction.id} auction={auction} variant={variant} />
+        ))}
+      </SimpleGrid>
+    </>
   );
 }
