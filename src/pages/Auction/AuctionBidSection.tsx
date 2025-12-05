@@ -4,7 +4,7 @@ import { Decimal } from "decimal.js";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
-import type { Auction, AuthStatus, Bid } from "../../types";
+import type { Auction, AuthStatus, Bid } from "../../types/types";
 import api from "../../utils/api";
 
 type AuctionBidSectionProps = {

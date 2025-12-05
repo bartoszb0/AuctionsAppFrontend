@@ -1,5 +1,5 @@
 import { SimpleGrid } from "@mantine/core";
-import type { Auction } from "../types";
+import type { Auction } from "../types/types";
 import AuctionCard from "./AuctionCard/AuctionCard";
 
 type AuctionListingProps = {

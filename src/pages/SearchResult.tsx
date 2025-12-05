@@ -7,7 +7,7 @@ import FilterButtons from "../components/FilterButtons";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
-import type { Auction } from "../types";
+import type { Auction } from "../types/types";
 import api from "../utils/api";
 import displayError from "../utils/displayError";
 import { isAuthenticated } from "../utils/isAuthenticated";

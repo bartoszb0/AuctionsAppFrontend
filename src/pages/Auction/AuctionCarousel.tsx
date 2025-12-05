@@ -2,7 +2,7 @@ import { Carousel } from "@mantine/carousel";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import type { Image } from "../../types";
+import type { Image } from "../../types/types";
 
 type CarouselProps = {
   images: Image[];

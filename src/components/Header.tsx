@@ -11,7 +11,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { AuthStatus } from "../types";
+import type { AuthStatus } from "../types/types";
 
 type HeaderProps = {
   auth: AuthStatus;

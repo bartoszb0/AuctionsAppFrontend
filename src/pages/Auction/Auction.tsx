@@ -1,7 +1,7 @@
 import { Flex, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { Auction, Bid } from "../../types";
+import type { Auction, Bid } from "../../types/types";
 import api from "../../utils/api";
 import displayError from "../../utils/displayError";
 import { isAuthenticated } from "../../utils/isAuthenticated";

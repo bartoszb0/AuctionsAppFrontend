@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { Controller, useForm } from "react-hook-form";
 import { Link, type SetURLSearchParams } from "react-router-dom";
-import { categories } from "../categories";
+import { categories } from "../constants/categories";
 
 type FilterButtonsProps = {
   searchParams: URLSearchParams;

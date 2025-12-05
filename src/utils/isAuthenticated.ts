@@ -1,6 +1,6 @@
 import { jwtDecode, type JwtPayload } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants/constants";
-import type { AuthStatus } from "../types";
+import type { AuthStatus } from "../types/types";
 
 interface MyJwtPayload extends JwtPayload {
   user_id: number;

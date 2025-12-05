@@ -1,4 +1,4 @@
-import type { Auction } from "../types";
+import type { Auction } from "../types/types";
 
 type NothingFoundProps = {
   isLoading: boolean;

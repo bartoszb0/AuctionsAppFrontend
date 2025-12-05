@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@mantine/core";
-import type { AuctionCardLayoutProps } from "../../types";
+import type { AuctionCardLayoutProps } from "../../types/types";
 
 export default function DefaultLayout({
   auction,

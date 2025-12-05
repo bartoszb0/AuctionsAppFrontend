@@ -2,7 +2,7 @@ import { Button, Flex, Loader, Stack, Table, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Bid } from "../../types";
+import type { Bid } from "../../types/types";
 import api from "../../utils/api";
 
 type BidsHistoryProps = {

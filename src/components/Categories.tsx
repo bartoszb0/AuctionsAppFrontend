@@ -1,6 +1,6 @@
 import { Button, Flex } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { categories } from "../categories";
+import { categories } from "../constants/categories";
 
 export default function Categories() {
   const categoriesElement = categories.map(({ name, icon: Icon }) => {

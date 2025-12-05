@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import PaginationComponent from "../components/PaginationComponent";
-import type { Auction, UserProfile } from "../types";
+import type { Auction, UserProfile } from "../types/types";
 import api from "../utils/api";
 import { isAuthenticated } from "../utils/isAuthenticated";
 
