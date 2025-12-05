@@ -26,17 +26,17 @@ export default function FetchAuctionsPagination({
     return { results: response.data.results, count: response.data.count };
   };
 
-  const { data } = useSuspenseQuery({
+  const { data: auctions } = useSuspenseQuery({
     queryKey: ["auctions", searchParams.toString()],
     queryFn: fetchAuctions,
   });
 
   return (
     <Flex mt="xl" direction="column" align="center">
-      <AuctionsListing auctions={data.results} variant={variant} />
+      <AuctionsListing auctions={auctions.results} variant={variant} />
       <PaginationComponent
         currentPage={currentPage}
-        allAuctionsCount={data.count}
+        allAuctionsCount={auctions.count}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
       />
