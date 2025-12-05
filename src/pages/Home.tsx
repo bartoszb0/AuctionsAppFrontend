@@ -1,5 +1,5 @@
-import { Flex, Loader } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { Flex } from "@mantine/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
@@ -20,12 +20,10 @@ export default function Home() {
     return { results: response.data.results, count: response.data.count };
   };
 
-  const { data, isPending, error } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["auctions", searchParams.toString()],
     queryFn: fetchAuctions,
   });
-
-  if (error) return <h1>{error.message}</h1>;
 
   return (
     <>
@@ -33,19 +31,13 @@ export default function Home() {
         <SearchInput />
         <Categories />
         <Flex mt="xl" direction="column" align="center">
-          {isPending || !data ? (
-            <Loader />
-          ) : (
-            <>
-              <AuctionsListing auctions={data.results} />
-              <PaginationComponent
-                currentPage={currentPage}
-                allAuctionsCount={data.count}
-                searchParams={searchParams}
-                setSearchParams={setSearchParams}
-              />
-            </>
-          )}
+          <AuctionsListing auctions={data.results} />
+          <PaginationComponent
+            currentPage={currentPage}
+            allAuctionsCount={data.count}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </Flex>
       </Flex>
     </>

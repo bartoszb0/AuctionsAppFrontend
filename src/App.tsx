@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -6,6 +7,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import GlobalLoader from "./components/GlobalLoader";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auction from "./pages/Auction/Auction";
@@ -33,7 +35,9 @@ function HeaderLayout() {
   return (
     <>
       <Header auth={isAuthenticated()} />
-      <Outlet />
+      <Suspense fallback={<GlobalLoader />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 }
