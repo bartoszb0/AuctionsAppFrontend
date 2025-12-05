@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import {
   BrowserRouter,
   Navigate,
@@ -8,13 +6,11 @@ import {
   Routes,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import ErrorPage from "./components/ErrorPage";
-import GlobalLoader from "./components/GlobalLoader";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auction from "./pages/Auction/Auction";
 import FollowedUsersAuction from "./pages/FollowedUsersAuctions";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
 import NewAuction from "./pages/NewAuction";
 import NotFound from "./pages/NotFound";
@@ -37,15 +33,7 @@ function HeaderLayout() {
   return (
     <>
       <Header auth={isAuthenticated()} />
-      <ErrorBoundary
-        fallbackRender={({ error, resetErrorBoundary }) => (
-          <ErrorPage error={error} resetErrorBoundary={resetErrorBoundary} />
-        )}
-      >
-        <Suspense fallback={<GlobalLoader />}>
-          <Outlet />
-        </Suspense>
-      </ErrorBoundary>
+      <Outlet />
     </>
   );
 }

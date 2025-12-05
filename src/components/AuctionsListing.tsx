@@ -4,12 +4,12 @@ import AuctionCard from "./AuctionCard/AuctionCard";
 
 type AuctionListingProps = {
   auctions: Auction[];
-  variant?: "wide";
+  variant?: "default" | "wide";
 };
 
 export default function AuctionsListing({
   auctions,
-  variant,
+  variant = "default",
 }: AuctionListingProps) {
   const gridProps =
     variant === "wide"

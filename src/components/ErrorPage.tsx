@@ -17,16 +17,8 @@ export default function ErrorPage({
     resetErrorBoundary();
   };
 
-  console.log(error);
-
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      p="lg"
-      style={{ minHeight: "80vh" }}
-    >
+    <Flex direction="column" align="center" justify="center" p="lg" mt="lg">
       <Title c="red">Error</Title>
       <Text c="dimmed" mt="md" style={{ textAlign: "center" }} size="xl">
         {error.message}
