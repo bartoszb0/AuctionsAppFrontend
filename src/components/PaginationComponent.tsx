@@ -15,16 +15,14 @@ export default function PaginationComponent({
   allAuctionsCount,
   searchParams,
   setSearchParams,
-  currentSize,
+  currentSize = AUCTIONS_PER_PAGE,
 }: PaginationProps) {
-  const pageSize = currentSize || AUCTIONS_PER_PAGE;
-
   return (
     <Pagination
       m="xl"
       size="xl"
       value={currentPage}
-      total={Math.ceil(allAuctionsCount / pageSize)}
+      total={Math.ceil(allAuctionsCount / currentSize)}
       onChange={(newPage) => {
         const params = new URLSearchParams(searchParams);
         params.set("page", newPage.toString());
