@@ -38,24 +38,27 @@ function HeaderLayout() {
   );
 }
 
+function ProtectedLayout() {
+  return (
+    <ProtectedRoute>
+      <Outlet />
+    </ProtectedRoute>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<HeaderLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/followed" element={<FollowedUsersAuction />} />
           <Route path="/search" element={<SearchResult />} />
           <Route path="/auctions/:auctionId" element={<Auction />} />
           <Route path="/user/:userId" element={<UserProfile />} />
-          <Route
-            path="/create"
-            element={
-              <ProtectedRoute>
-                <NewAuction />
-              </ProtectedRoute>
-            }
-          />
+          <Route element={<ProtectedLayout />}>
+            <Route path="/followed" element={<FollowedUsersAuction />} />
+            <Route path="/create" element={<NewAuction />} />
+          </Route>
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
