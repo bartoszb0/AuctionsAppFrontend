@@ -2,7 +2,6 @@ import { Flex, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
-import Header from "../components/Header";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import type { Auction } from "../types";
@@ -37,7 +36,6 @@ export default function FollowedUsersAuction() {
 
   return (
     <>
-      <Header auth={auth} />
       <Flex align="center" justify="center" mt="xl" direction="column">
         <h1>Followed user's auction</h1>
       </Flex>

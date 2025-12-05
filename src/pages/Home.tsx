@@ -1,62 +1,57 @@
 import { Flex, Loader } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import Categories from "../components/Categories";
-import Header from "../components/Header";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
+import type { Auction } from "../types";
 import api from "../utils/api";
-import { isAuthenticated } from "../utils/isAuthenticated";
 
 export default function Home() {
-  const [auth] = useState(isAuthenticated());
-  const [auctions, setAuctions] = useState([]);
-  const [allAuctionsCount, setAllAuctionsCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
-  useEffect(() => {
-    const fetchAuctions = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get(`auctions/?${searchParams.toString()}`);
-        setAllAuctionsCount(response.data.count);
-        setAuctions(response.data.results);
-      } catch (error) {
-        console.error("Error fetching auctions:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchAuctions = async (): Promise<{
+    results: Auction[];
+    count: number;
+  }> => {
+    const response = await api.get(`auctions/?${searchParams.toString()}`);
+    return { results: response.data.results, count: response.data.count };
+  };
 
-    fetchAuctions();
-  }, [currentPage]);
+  const { data, isPending, error } = useQuery({
+    queryKey: ["auctions", searchParams.toString()],
+    queryFn: fetchAuctions,
+  });
+
+  if (error) return <h1>{error.message}</h1>;
 
   return (
     <>
-      <Header auth={auth} />
       <Flex justify="center" direction="column" align="center" gap="sm">
         <SearchInput />
         <Categories />
         <Flex mt="xl" direction="column" align="center">
-          {isLoading ? (
+          {isPending || !data ? (
             <Loader />
           ) : (
             <>
-              <AuctionsListing auctions={auctions} />
+              <AuctionsListing auctions={data.results} />
               <PaginationComponent
                 currentPage={currentPage}
-                allAuctionsCount={allAuctionsCount}
+                allAuctionsCount={data.count}
                 searchParams={searchParams}
                 setSearchParams={setSearchParams}
               />
             </>
           )}
         </Flex>
-        <NothingFound isLoading={isLoading} auctionArray={auctions} />
+        <NothingFound
+          isLoading={isPending}
+          auctionArray={data?.results ?? []}
+        />
       </Flex>
     </>
   );

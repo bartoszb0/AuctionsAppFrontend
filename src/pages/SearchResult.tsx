@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
 import FilterButtons from "../components/FilterButtons";
-import Header from "../components/Header";
 import NothingFound from "../components/NothingFound";
 import PaginationComponent from "../components/PaginationComponent";
 import SearchInput from "../components/SearchInput";
@@ -48,7 +47,6 @@ export default function SearchResult() {
 
   return (
     <>
-      <Header auth={auth} />
       <Flex direction="column" gap="xl" align="center">
         <Flex direction="row" justify="center" align="center">
           <SearchInput searchParams={searchParams} />

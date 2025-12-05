@@ -1,7 +1,6 @@
 import { Flex, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../../components/Header";
 import type { Auction, Bid } from "../../types";
 import api from "../../utils/api";
 import displayError from "../../utils/displayError";
@@ -35,7 +34,6 @@ export default function Auction() {
 
   return (
     <>
-      <Header auth={auth} />
       {!auction ? (
         <Flex align="center" justify="center" mt="xl">
           <Loader />

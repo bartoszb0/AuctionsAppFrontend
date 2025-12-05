@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { categories } from "../categories";
-import Header from "../components/Header";
 import ImageDropzone from "../components/ImageDropzone";
 import api from "../utils/api";
 import displayError from "../utils/displayError";
@@ -107,7 +106,6 @@ export default function NewAuction() {
 
   return (
     <>
-      <Header auth={auth} />
       <Stack mb="lg" m="lg" pl="xl" pr="xl" maw={700} mx="auto">
         <Title style={{ textAlign: "center" }}>Create new Auction</Title>
         <form onSubmit={handleSubmit(onSubmit)}>

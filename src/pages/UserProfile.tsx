@@ -2,7 +2,6 @@ import { Box, Button, Flex, Group, Loader, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import AuctionsListing from "../components/AuctionsListing";
-import Header from "../components/Header";
 import PaginationComponent from "../components/PaginationComponent";
 import type { Auction, UserProfile } from "../types";
 import api from "../utils/api";
@@ -78,7 +77,6 @@ export default function UserProfile() {
 
   return (
     <>
-      <Header auth={isAuthenticated()} />
       <Flex align="center" justify="center" mt="xl" direction="column" mb="xl">
         {isLoading ? (
           <Loader />

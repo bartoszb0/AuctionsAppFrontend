@@ -1,5 +1,12 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auction from "./pages/Auction/Auction";
 import FollowedUsersAuction from "./pages/FollowedUsersAuctions";
@@ -10,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";
 import UserProfile from "./pages/UserProfile";
+import { isAuthenticated } from "./utils/isAuthenticated";
 
 function Logout() {
   localStorage.clear();
@@ -21,23 +29,34 @@ function RegisterAndLogout() {
   return <Register />;
 }
 
+function HeaderLayout() {
+  return (
+    <>
+      <Header auth={isAuthenticated()} />
+      <Outlet />
+    </>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/followed" element={<FollowedUsersAuction />} />
-        <Route path="/search" element={<SearchResult />} />
-        <Route path="/auctions/:auctionId" element={<Auction />} />
-        <Route path="/user/:userId" element={<UserProfile />} />
-        <Route
-          path="/create"
-          element={
-            <ProtectedRoute>
-              <NewAuction />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<HeaderLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/followed" element={<FollowedUsersAuction />} />
+          <Route path="/search" element={<SearchResult />} />
+          <Route path="/auctions/:auctionId" element={<Auction />} />
+          <Route path="/user/:userId" element={<UserProfile />} />
+          <Route
+            path="/create"
+            element={
+              <ProtectedRoute>
+                <NewAuction />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
