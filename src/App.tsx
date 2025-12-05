@@ -55,6 +55,7 @@ function App() {
           <Route path="/search" element={<SearchResult />} />
           <Route path="/auctions/:auctionId" element={<Auction />} />
           <Route path="/user/:userId" element={<UserProfile />} />
+          <Route path="*" element={<NotFound />}></Route>
           <Route element={<ProtectedLayout />}>
             <Route path="/followed" element={<FollowedUsersAuction />} />
             <Route path="/create" element={<NewAuction />} />
@@ -63,7 +64,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="*" element={<NotFound />}></Route>
       </Routes>
 
       <ToastContainer
