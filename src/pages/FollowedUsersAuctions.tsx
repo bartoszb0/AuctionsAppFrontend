@@ -14,6 +14,7 @@ export default function FollowedUsersAuction() {
         <FetchAuctionsPagination
           endpoint={"auctions/followed/"}
           variant="wide"
+          baseQueryKey="followed-auctions"
         />
       </DataContentWrapper>
     </>

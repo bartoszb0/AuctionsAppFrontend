@@ -11,12 +11,14 @@ type FetchAuctionsPaginationProps = {
   endpoint: string;
   variant?: "default" | "wide";
   currentSize?: number;
+  baseQueryKey: string;
 };
 
 export default function FetchAuctionsPagination({
   endpoint,
   variant = "default",
   currentSize = AUCTIONS_PER_PAGE,
+  baseQueryKey,
 }: FetchAuctionsPaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
@@ -30,7 +32,7 @@ export default function FetchAuctionsPagination({
   };
 
   const { data: auctions } = useSuspenseQuery({
-    queryKey: ["auctions", searchParams.toString()],
+    queryKey: [baseQueryKey, searchParams.toString()],
     queryFn: fetchAuctions,
   });
 

@@ -11,7 +11,10 @@ export default function Home() {
         <SearchInput />
         <Categories />
         <DataContentWrapper>
-          <FetchAuctionsPagination endpoint={"auctions/"} />
+          <FetchAuctionsPagination
+            endpoint={"auctions/"}
+            baseQueryKey="homepage-auctions"
+          />
         </DataContentWrapper>
       </Flex>
     </>
