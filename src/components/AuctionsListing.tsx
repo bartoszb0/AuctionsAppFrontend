@@ -30,16 +30,17 @@ export default function AuctionsListing({
 
   return (
     <>
-      {auctions.length <= 0 && (
+      {auctions.length <= 0 ? (
         <Text fs="italic" size="xl" mt="xl">
           No auction found
         </Text>
+      ) : (
+        <SimpleGrid {...gridProps}>
+          {auctions.map((auction: Auction) => (
+            <AuctionCard key={auction.id} auction={auction} variant={variant} />
+          ))}
+        </SimpleGrid>
       )}
-      <SimpleGrid {...gridProps}>
-        {auctions.map((auction: Auction) => (
-          <AuctionCard key={auction.id} auction={auction} variant={variant} />
-        ))}
-      </SimpleGrid>
     </>
   );
 }
