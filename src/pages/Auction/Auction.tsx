@@ -1,19 +1,19 @@
 import { useParams } from "react-router-dom";
 import DataContentWrapper from "../../components/DataContentWrapper";
+import isIdValid from "../../utils/isIdValid";
 import NotFound from "../NotFound";
 import FetchAuctionInformation from "./FetchAuctionInformation";
 
 export default function Auction() {
   const { auctionId } = useParams();
-  const safeAuctionId = Number(auctionId);
-  const isValid = !isNaN(safeAuctionId) && safeAuctionId > 0;
+  const { safeId, isValid } = isIdValid(auctionId);
 
   if (!isValid) return <NotFound />;
 
   return (
     <>
       <DataContentWrapper>
-        <FetchAuctionInformation auctionId={safeAuctionId} />
+        <FetchAuctionInformation auctionId={safeId} />
       </DataContentWrapper>
     </>
   );
