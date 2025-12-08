@@ -14,14 +14,9 @@ export default function FetchUserInformation({
 }: FetchUserInformationProps) {
   const auth = isAuthenticated();
 
-  const fetchUser = async (): Promise<UserProfile> => {
-    const response = await api.get(`users/${userId}/`);
-    return response.data;
-  };
-
-  const { data: user } = useSuspenseQuery({
+  const { data: user } = useSuspenseQuery<UserProfile>({
     queryKey: ["user", userId],
-    queryFn: fetchUser,
+    queryFn: () => api.get(`users/${userId}/`).then((res) => res.data),
   });
 
   return (

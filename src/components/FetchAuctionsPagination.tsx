@@ -23,17 +23,15 @@ export default function FetchAuctionsPagination({
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
-  const fetchAuctions = async (): Promise<{
+  const { data: auctions } = useSuspenseQuery<{
     results: Auction[];
     count: number;
-  }> => {
-    const response = await api.get(`${endpoint}?${searchParams.toString()}`);
-    return { results: response.data.results, count: response.data.count };
-  };
-
-  const { data: auctions } = useSuspenseQuery({
+  }>({
     queryKey: [baseQueryKey, searchParams.toString()],
-    queryFn: fetchAuctions,
+    queryFn: () =>
+      api
+        .get(`${endpoint}?${searchParams.toString()}`)
+        .then((res) => ({ results: res.data.results, count: res.data.count })),
   });
 
   return (
