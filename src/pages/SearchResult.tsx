@@ -40,6 +40,7 @@ export default function SearchResult() {
           endpoint={"auctions/"}
           variant="wide"
           currentSize={currentSize}
+          baseQueryKey="search-results-auctions"
         />
       </DataContentWrapper>
     </>
