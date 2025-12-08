@@ -1,8 +1,11 @@
 import { Flex, Text } from "@mantine/core";
 import DataContentWrapper from "../components/DataContentWrapper";
 import FetchAuctionsPagination from "../components/FetchAuctionsPagination";
+import { isAuthenticated } from "../utils/isAuthenticated";
 
 export default function FollowedUsersAuction() {
+  const auth = isAuthenticated();
+
   return (
     <>
       <Flex align="center" justify="center" mt="xl" direction="column" mb="xl">
@@ -14,7 +17,7 @@ export default function FollowedUsersAuction() {
         <FetchAuctionsPagination
           endpoint={"auctions/followed/"}
           variant="wide"
-          baseQueryKey="followed-auctions"
+          baseQueryKey={`followed-user-${auth.userId}-auctions`}
         />
       </DataContentWrapper>
     </>
