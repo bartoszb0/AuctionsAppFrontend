@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import DataContentWrapper from "../components/DataContentWrapper";
-import FetchAuctionsPagination from "../components/FetchAuctionsPagination";
-import FetchUserInformation from "../components/FetchUserInformation";
-import NotFound from "./NotFound";
+import DataContentWrapper from "../../components/DataContentWrapper";
+import FetchAuctionsPagination from "../../components/FetchAuctionsPagination";
+import NotFound from "../NotFound";
+import FetchUserInformation from "./FetchUserInformation";
 
 export default function UserProfile() {
   const { userId } = useParams();
@@ -18,7 +18,7 @@ export default function UserProfile() {
         <FetchAuctionsPagination
           endpoint={`users/${userId}/auctions/`}
           variant="wide"
-          baseQueryKey="user-auctions"
+          baseQueryKey={`user-${userId}-auctions`}
         />
       </DataContentWrapper>
     </>

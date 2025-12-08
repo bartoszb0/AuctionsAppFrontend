@@ -16,7 +16,7 @@ import NewAuction from "./pages/NewAuction";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";
-import UserProfile from "./pages/UserProfile";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import { isAuthenticated } from "./utils/isAuthenticated";
 
 function Logout() {

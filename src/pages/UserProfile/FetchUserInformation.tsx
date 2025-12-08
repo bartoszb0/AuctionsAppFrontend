@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Group, Text } from "@mantine/core";
+import { Box, Flex, Group, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import type { UserProfile } from "../types/types";
-import api from "../utils/api";
-import { isAuthenticated } from "../utils/isAuthenticated";
+import type { UserProfile } from "../../types/types";
+import api from "../../utils/api";
+import { isAuthenticated } from "../../utils/isAuthenticated";
+import UserFollowSection from "./UserFollowSection";
 
 type FetchUserInformationProps = {
   userId: number;
@@ -24,38 +24,6 @@ export default function FetchUserInformation({
     queryFn: fetchUser,
   });
 
-  ///
-
-  const [followersLength, setFollowersLength] = useState(0);
-  const [isFollowing, setIsFollowing] = useState(false);
-
-  useEffect(() => {
-    if (!user) return;
-
-    setFollowersLength(user.followers.length);
-
-    if (auth.userId !== user.id) {
-      const following = user.followers.some((f) => f.id == auth.userId);
-      setIsFollowing(following);
-    }
-  }, [user, auth.userId]);
-
-  const handleFollowClick = async () => {
-    try {
-      await api.post(`/users/${userId}/follow/`);
-    } catch (err) {
-      console.error(err);
-    }
-
-    // UI update
-    if (isFollowing) {
-      setFollowersLength((prev) => prev - 1);
-    } else {
-      setFollowersLength((prev) => prev + 1);
-    }
-    setIsFollowing((prev) => !prev);
-  };
-
   return (
     <>
       <Flex align="center" justify="center" mt="xl" direction="column" mb="xl">
@@ -63,18 +31,7 @@ export default function FetchUserInformation({
           {user.username}
         </Text>
 
-        <Group>
-          <h3>Followers: {followersLength}</h3>
-          <h3>Following: {user.following.length}</h3>
-        </Group>
-        {auth.isAuthenticated && auth.userId != user.id && (
-          <Button
-            onClick={handleFollowClick}
-            variant={isFollowing ? "outline" : "filled"}
-          >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </Button>
-        )}
+        <UserFollowSection auth={auth} userId={userId} user={user} />
 
         <Group gap="xl" mt="xl">
           <Box bg="dark.5" p="sm" bdrs="sm">
