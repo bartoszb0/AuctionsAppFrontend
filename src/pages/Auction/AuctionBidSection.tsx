@@ -1,31 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Flex, Loader, NumberInput } from "@mantine/core";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Decimal } from "decimal.js";
-import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 import z from "zod";
-import type { Auction, AuthStatus, Bid } from "../../types/types";
+import type { Auction, AuthStatus } from "../../types/types";
 import api from "../../utils/api";
 
 type AuctionBidSectionProps = {
   auction: Auction;
-  setBidsHistory: React.Dispatch<React.SetStateAction<Bid[]>>;
-  setHighestBidAmount: React.Dispatch<React.SetStateAction<string | null>>;
   auth: AuthStatus;
 };
 
 export default function AuctionBidSection({
   auction,
-  setBidsHistory,
-  setHighestBidAmount,
   auth,
 }: AuctionBidSectionProps) {
   const highestBidAmount = new Decimal(auction.highest_bid);
   const minimalBidAmount = new Decimal(auction.minimal_bid);
 
-  const [currentMinimalBidAmount, setCurrentMinimalBidAmount] = useState(
-    highestBidAmount.plus(minimalBidAmount)
-  );
+  const currentMinimalBidAmount = highestBidAmount.plus(minimalBidAmount);
 
   const schema = z.object({
     amount: z
@@ -38,28 +33,32 @@ export default function AuctionBidSection({
 
   type FormFields = z.infer<typeof schema>;
 
+  const queryClient = useQueryClient();
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: FormFields) =>
+      api.post(`auctions/${auction.id}/bids/`, data),
+
+    onError: (error) => toast.error(error.message),
+
+    onSuccess: () => toast.success("Bid placed succesfully"),
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["bids-history", auction.id] });
+      queryClient.invalidateQueries({ queryKey: ["auction", auction.id] });
+    },
+  });
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    try {
-      const response = await api.post(`auctions/${auction.id}/bids/`, data);
-      const newBid = response.data;
-      // Set highest bid amount for display
-      setHighestBidAmount(newBid.amount);
-      // Set highest bid amount for validation
-      const newHighestBidAmount = new Decimal(newBid.amount);
-      setCurrentMinimalBidAmount(newHighestBidAmount.plus(minimalBidAmount));
-      // Add bid to bids history
-      setBidsHistory((prev) => [newBid, ...prev]);
-    } catch (err) {
-      console.error(err);
-    }
+    mutate(data);
   };
 
   return (
@@ -73,7 +72,7 @@ export default function AuctionBidSection({
               render={({ field }) => (
                 <NumberInput
                   {...field}
-                  disabled={isSubmitting}
+                  disabled={isPending}
                   placeholder="e.g. 100"
                   size="xl"
                   error={errors.amount && errors.amount.message}
@@ -83,12 +82,12 @@ export default function AuctionBidSection({
                 />
               )}
             />
-            {isSubmitting ? (
+            {isPending ? (
               <Flex align="center">
                 <Loader />
               </Flex>
             ) : (
-              <Button type="submit" size="xl">
+              <Button type="submit" size="xl" disabled={isPending}>
                 Place Bid
               </Button>
             )}
