@@ -23,7 +23,7 @@ export default function ErrorPage({
       <Text c="dimmed" mt="md" style={{ textAlign: "center" }} size="xl">
         {error.message}
       </Text>
-      <Button onClick={handleReset} c="red" variant="default" mt="xl">
+      <Button onClick={handleReset} c="red" variant="default" mt="lg">
         Try Reloading Page
       </Button>
     </Flex>
