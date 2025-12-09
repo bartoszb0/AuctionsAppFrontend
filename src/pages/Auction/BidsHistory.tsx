@@ -1,64 +1,37 @@
-import { Button, Flex, Loader, Stack, Table, Text } from "@mantine/core";
+import { Button, Flex, Stack, Table, Text } from "@mantine/core";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Bid } from "../../types/types";
 import api from "../../utils/api";
 
 type BidsHistoryProps = {
   auctionId: number;
-  bidsHistory: Bid[] | null;
-  setBidsHistory: React.Dispatch<React.SetStateAction<Bid[]>>;
 };
 
-export default function BidsHistory({
-  auctionId,
-  bidsHistory,
-  setBidsHistory,
-}: BidsHistoryProps) {
-  const [moreBidsAvailable, setMoreBidsAvailable] = useState<string | null>(
-    null
-  );
-  const [loadingBids, setLoadingBids] = useState(true);
-  const [loadingMoreBids, setLoadingMoreBids] = useState(false);
+export default function BidsHistory({ auctionId }: BidsHistoryProps) {
+  const {
+    data: bidsHistory,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useSuspenseInfiniteQuery<{
+    results: Bid[];
+    moreBidsAvailable: string | null;
+  }>({
+    queryKey: ["bids-history", auctionId],
+    queryFn: ({ pageParam }) =>
+      api.get(pageParam as string).then((res) => ({
+        results: res.data.results,
+        moreBidsAvailable: res.data.next,
+      })),
+    getNextPageParam: (lastPage) => lastPage.moreBidsAvailable,
+    initialPageParam: `auctions/${auctionId}/bids/`,
+  });
 
-  async function fetchBids(fetchMoreUrl?: string) {
-    if (fetchMoreUrl) setLoadingMoreBids(true);
+  const allBids: Bid[] = bidsHistory.pages.flatMap((page) => page.results);
 
-    try {
-      const response = await api.get(
-        fetchMoreUrl || `auctions/${auctionId}/bids/`
-      );
-      if (!fetchMoreUrl) {
-        setBidsHistory(response.data.results);
-      } else {
-        setBidsHistory((prev) => {
-          const newUniqueBids = response.data.results.filter(
-            (bid: Bid) => !prev.some((existing) => existing.id === bid.id)
-          );
-
-          return [...prev, ...newUniqueBids];
-        });
-      }
-
-      if (!response.data.next) {
-        setMoreBidsAvailable(null);
-      } else {
-        setMoreBidsAvailable(response.data.next);
-      }
-    } catch (error) {
-      console.error("Error fetching bids:", error);
-    } finally {
-      setLoadingBids(false);
-      setLoadingMoreBids(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchBids();
-  }, [auctionId]);
-
-  const bidsElement = bidsHistory?.map((bid) => {
+  const bidsElement = allBids.map((bid) => {
     const formattedDate = dayjs(bid.placed_on).format("HH:mm:ss | DD-MM-YYYY");
 
     return (
@@ -74,13 +47,9 @@ export default function BidsHistory({
 
   return (
     <>
-      {loadingBids ? (
-        <Flex align="center" justify="center" mt="xl">
-          <Loader />
-        </Flex>
-      ) : !bidsElement || bidsElement.length === 0 ? (
+      {allBids.length === 0 ? (
         <Flex align="center" justify="center">
-          <Text mb="md" size="xl">
+          <Text mb="md" fs="italic" size="xl">
             No bids found
           </Text>
         </Flex>
@@ -101,11 +70,11 @@ export default function BidsHistory({
             <Table.Tbody>{bidsElement}</Table.Tbody>
           </Table>
 
-          {moreBidsAvailable && (
+          {hasNextPage && (
             <Button
               variant="default"
-              disabled={loadingMoreBids}
-              onClick={() => fetchBids(moreBidsAvailable)}
+              disabled={isFetchingNextPage}
+              onClick={() => fetchNextPage()}
             >
               Show more bids
             </Button>
