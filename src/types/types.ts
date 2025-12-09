@@ -36,8 +36,9 @@ export type User = {
 };
 
 export type UserProfile = User & {
-  followers: User[];
-  following: User[];
+  followers_count: number;
+  following_count: number;
+  is_following: boolean | null;
   auctions_count: number;
   open_auctions_count: number;
 };

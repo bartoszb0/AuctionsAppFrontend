@@ -26,7 +26,7 @@ export default function FetchUserInformation({
           {user.username}
         </Text>
 
-        <UserFollowSection auth={auth} userId={userId} user={user} />
+        <UserFollowSection auth={auth} user={user} />
 
         <Group gap="xl" mt="xl">
           <Box bg="dark.5" p="sm" bdrs="sm">
