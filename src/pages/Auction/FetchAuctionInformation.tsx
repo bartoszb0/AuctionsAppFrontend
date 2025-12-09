@@ -30,7 +30,7 @@ export default function FetchAuctionInformation({
 
       {auction.closed ? (
         <Flex justify="center" mt="lg">
-          <Text c="red" size="xl">
+          <Text c="red.8" fs="italic" size="xl">
             AUCTION CLOSED
           </Text>
         </Flex>
