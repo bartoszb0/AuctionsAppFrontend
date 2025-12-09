@@ -1,7 +1,6 @@
 import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import type { Auction, Bid } from "../../types/types";
+import type { Auction } from "../../types/types";
 import api from "../../utils/api";
 import { isAuthenticated } from "../../utils/isAuthenticated";
 import AuctionBidSection from "./AuctionBidSection";
@@ -22,16 +21,11 @@ export default function FetchAuctionInformation({
     queryFn: () => api.get(`auctions/${auctionId}/`).then((res) => res.data),
   });
 
-  console.log(auction);
-
-  const [highestBidAmount, setHighestBidAmount] = useState<string | null>(null);
-  const [bidsHistory, setBidsHistory] = useState<Bid[]>([]);
-
   return (
     <Flex justify="center" direction="column" align="center" gap="sm">
       <AuctionDescription
         auction={auction}
-        highestBidAmount={highestBidAmount}
+        highestBidAmount={auction.highest_bid}
       />
 
       {auction.closed ? (
@@ -41,21 +35,12 @@ export default function FetchAuctionInformation({
           </Text>
         </Flex>
       ) : (
-        <AuctionBidSection
-          auction={auction}
-          setBidsHistory={setBidsHistory}
-          setHighestBidAmount={setHighestBidAmount}
-          auth={auth}
-        />
+        <AuctionBidSection auction={auction} auth={auth} />
       )}
 
       <hr style={{ margin: "30px", borderColor: "grey", width: "100%" }} />
 
-      <BidsHistory
-        auctionId={auction.id}
-        bidsHistory={bidsHistory}
-        setBidsHistory={setBidsHistory}
-      ></BidsHistory>
+      <BidsHistory auctionId={auction.id}></BidsHistory>
     </Flex>
   );
 }
