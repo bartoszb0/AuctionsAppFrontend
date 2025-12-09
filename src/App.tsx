@@ -12,7 +12,7 @@ import Auction from "./pages/Auction/Auction";
 import FollowedUsersAuction from "./pages/FollowedUsersAuctions";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
-import NewAuction from "./pages/NewAuction";
+import NewAuction from "./pages/NewAuction/NewAuction";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";

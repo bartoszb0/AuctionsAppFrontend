@@ -11,12 +11,14 @@ type ImageDropzoneProps = Partial<DropzoneProps> & {
   files: any;
   setFiles: React.Dispatch<any>;
   errors: FieldErrors;
+  isSubmitting: boolean;
 };
 
 export default function ImageDropzone({
   files,
   setFiles,
   errors,
+  isSubmitting,
   ...props
 }: ImageDropzoneProps) {
   function removeFile(fileToRemove: any) {
@@ -109,6 +111,7 @@ export default function ImageDropzone({
             },
           }
         }
+        disabled={isSubmitting}
       >
         <Group justify="center" gap="xl" mih={100}>
           <Dropzone.Accept>
@@ -118,11 +121,14 @@ export default function ImageDropzone({
             <DoNotDisturbAltIcon fontSize="large" />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <UploadFileIcon fontSize="large" />
+            <UploadFileIcon
+              fontSize="large"
+              style={{ color: isSubmitting ? "grey" : "" }}
+            />
           </Dropzone.Idle>
 
           <Flex justify="center" align="center" direction="column">
-            <Text size="xl" inline>
+            <Text size="xl" inline c={isSubmitting ? "dimmed" : ""}>
               Drag photos here or click to select files
             </Text>
             <Text size="sm" c="dimmed" inline mt={7}>
