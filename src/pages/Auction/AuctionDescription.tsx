@@ -13,7 +13,7 @@ export default function AuctionDescription({
   auction,
   highestBidAmount,
 }: AuctionDescriptionProps) {
-  const deadlineFormatted = dayjs(auction?.deadline).format(
+  const deadlineFormatted = dayjs(auction.deadline).format(
     "MMMM DD, YYYY h:mm A"
   );
 
