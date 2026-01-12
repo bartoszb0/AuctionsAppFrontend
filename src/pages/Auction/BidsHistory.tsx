@@ -1,9 +1,8 @@
 import { Button, Flex, Stack, Table, Text } from "@mantine/core";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import UseFetchBidsHistory from "../../hooks/queries/useFetchBidsHistory";
 import type { Bid } from "../../types/types";
-import api from "../../utils/api";
 
 type BidsHistoryProps = {
   auctionId: number;
@@ -15,19 +14,7 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useSuspenseInfiniteQuery<{
-    results: Bid[];
-    moreBidsAvailable: string | null;
-  }>({
-    queryKey: ["bids-history", auctionId],
-    queryFn: ({ pageParam }) =>
-      api.get(pageParam as string).then((res) => ({
-        results: res.data.results,
-        moreBidsAvailable: res.data.next,
-      })),
-    getNextPageParam: (lastPage) => lastPage.moreBidsAvailable,
-    initialPageParam: `auctions/${auctionId}/bids/`,
-  });
+  } = UseFetchBidsHistory(auctionId);
 
   const allBids: Bid[] = bidsHistory.pages.flatMap((page) => page.results);
 
