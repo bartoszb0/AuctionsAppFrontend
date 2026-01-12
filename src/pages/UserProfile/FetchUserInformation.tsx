@@ -1,7 +1,5 @@
 import { Box, Flex, Group, Text } from "@mantine/core";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import type { UserProfile } from "../../types/types";
-import api from "../../utils/api";
+import UseFetchUser from "../../hooks/queries/useFetchUser";
 import { isAuthenticated } from "../../utils/isAuthenticated";
 import UserFollowSection from "./UserFollowSection";
 
@@ -14,10 +12,7 @@ export default function FetchUserInformation({
 }: FetchUserInformationProps) {
   const auth = isAuthenticated();
 
-  const { data: user } = useSuspenseQuery<UserProfile>({
-    queryKey: ["user", userId],
-    queryFn: () => api.get(`users/${userId}/`).then((res) => res.data),
-  });
+  const { data: user } = UseFetchUser(userId);
 
   return (
     <>
