@@ -1,9 +1,7 @@
 import { Flex } from "@mantine/core";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { AUCTIONS_PER_PAGE } from "../constants/constants";
-import type { Auction } from "../types/types";
-import api from "../utils/api";
+import UseFetchAuctions from "../hooks/queries/useFetchAuctions";
 import AuctionsListing from "./AuctionsListing";
 import PaginationComponent from "./PaginationComponent";
 
@@ -23,16 +21,11 @@ export default function FetchAuctionsPagination({
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
-  const { data: auctions } = useSuspenseQuery<{
-    results: Auction[];
-    count: number;
-  }>({
-    queryKey: [baseQueryKey, searchParams.toString()],
-    queryFn: () =>
-      api
-        .get(`${endpoint}?${searchParams.toString()}`)
-        .then((res) => ({ results: res.data.results, count: res.data.count })),
-  });
+  const { data: auctions } = UseFetchAuctions(
+    baseQueryKey,
+    searchParams,
+    endpoint
+  );
 
   return (
     <Flex mt="xl" direction="column" align="center">
