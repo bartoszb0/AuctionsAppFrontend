@@ -1,7 +1,5 @@
 import { Flex, Text } from "@mantine/core";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import type { Auction } from "../../types/types";
-import api from "../../utils/api";
+import useFetchAuction from "../../hooks/queries/useFetchAuctions";
 import { isAuthenticated } from "../../utils/isAuthenticated";
 import AuctionBidSection from "./AuctionBidSection";
 import AuctionDescription from "./AuctionDescription";
@@ -16,10 +14,7 @@ export default function FetchAuctionInformation({
 }: FetchAuctionProps) {
   const auth = isAuthenticated();
 
-  const { data: auction } = useSuspenseQuery<Auction>({
-    queryKey: ["auction", auctionId],
-    queryFn: () => api.get(`auctions/${auctionId}/`).then((res) => res.data),
-  });
+  const { data: auction } = useFetchAuction(auctionId);
 
   return (
     <Flex justify="center" direction="column" align="center" gap="sm">
