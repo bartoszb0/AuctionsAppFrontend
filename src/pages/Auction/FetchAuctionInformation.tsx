@@ -1,5 +1,5 @@
 import { Flex, Text } from "@mantine/core";
-import useFetchAuction from "../../hooks/queries/useFetchAuctions";
+import useFetchAuction from "../../hooks/queries/useFetchAuction";
 import { isAuthenticated } from "../../utils/isAuthenticated";
 import AuctionBidSection from "./AuctionBidSection";
 import AuctionDescription from "./AuctionDescription";
