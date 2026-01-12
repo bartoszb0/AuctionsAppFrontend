@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Auction } from "../../types/types";
 import api from "../../utils/api";
 
-export default function UseFetchAuctions(
+export default function useAuctions(
   baseQueryKey: string,
   searchParams: URLSearchParams,
   endpoint: string

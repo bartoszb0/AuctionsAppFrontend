@@ -1,5 +1,5 @@
 import { Box, Flex, Group, Text } from "@mantine/core";
-import UseFetchUser from "../../hooks/queries/useFetchUser";
+import useUser from "../../hooks/queries/useUser";
 import { isAuthenticated } from "../../utils/isAuthenticated";
 import UserFollowSection from "./UserFollowSection";
 
@@ -12,7 +12,7 @@ export default function FetchUserInformation({
 }: FetchUserInformationProps) {
   const auth = isAuthenticated();
 
-  const { data: user } = UseFetchUser(userId);
+  const { data: user } = useUser(userId);
 
   return (
     <>

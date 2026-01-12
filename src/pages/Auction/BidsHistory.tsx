@@ -1,7 +1,7 @@
 import { Button, Flex, Stack, Table, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-import UseFetchBidsHistory from "../../hooks/queries/useFetchBidsHistory";
+import useBidsHistory from "../../hooks/queries/useBidsHistory";
 import type { Bid } from "../../types/types";
 
 type BidsHistoryProps = {
@@ -14,7 +14,7 @@ export default function BidsHistory({ auctionId }: BidsHistoryProps) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = UseFetchBidsHistory(auctionId);
+  } = useBidsHistory(auctionId);
 
   const allBids: Bid[] = bidsHistory.pages.flatMap((page) => page.results);
 

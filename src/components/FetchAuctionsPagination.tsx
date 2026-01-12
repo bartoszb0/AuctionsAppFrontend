@@ -1,7 +1,7 @@
 import { Flex } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { AUCTIONS_PER_PAGE } from "../constants/constants";
-import UseFetchAuctions from "../hooks/queries/useFetchAuctions";
+import useAuctions from "../hooks/queries/useAuctions";
 import AuctionsListing from "./AuctionsListing";
 import PaginationComponent from "./PaginationComponent";
 
@@ -21,11 +21,7 @@ export default function FetchAuctionsPagination({
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
 
-  const { data: auctions } = UseFetchAuctions(
-    baseQueryKey,
-    searchParams,
-    endpoint
-  );
+  const { data: auctions } = useAuctions(baseQueryKey, searchParams, endpoint);
 
   return (
     <Flex mt="xl" direction="column" align="center">

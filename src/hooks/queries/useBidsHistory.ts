@@ -2,7 +2,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import type { Bid } from "../../types/types";
 import api from "../../utils/api";
 
-export default function UseFetchBidsHistory(auctionId: number) {
+export default function useBidsHistory(auctionId: number) {
   return useSuspenseInfiniteQuery<{
     results: Bid[];
     moreBidsAvailable: string | null;
