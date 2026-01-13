@@ -1,12 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Flex, Loader, NumberInput } from "@mantine/core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Decimal } from "decimal.js";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { toast } from "react-toastify";
-import z from "zod";
+import usePlaceBid from "../../hooks/mutations/usePlaceBid";
+import { bidSchema, type BidFormFields } from "../../schemas/bidSchema";
 import type { Auction, AuthStatus } from "../../types/types";
-import api from "../../utils/api";
 
 type AuctionBidSectionProps = {
   auction: Auction;
@@ -19,51 +17,27 @@ export default function AuctionBidSection({
 }: AuctionBidSectionProps) {
   const highestBidAmount = new Decimal(auction.highest_bid);
   const minimalBidAmount = new Decimal(auction.minimal_bid);
-
   const currentMinimalBidAmount = highestBidAmount.plus(minimalBidAmount);
 
-  const schema = z.object({
-    amount: z
-      .number("Number required")
-      .min(
-        currentMinimalBidAmount.toNumber(),
-        `Bid must be at least $${currentMinimalBidAmount.toFixed(2)}`
-      ),
-  });
-
-  type FormFields = z.infer<typeof schema>;
-
-  const queryClient = useQueryClient();
+  const schema = bidSchema(currentMinimalBidAmount.toNumber());
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>({
+  } = useForm<BidFormFields>({
     resolver: zodResolver(schema),
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: FormFields) =>
-      api.post(`auctions/${auction.id}/bids/`, data),
+  const { mutate, isPending } = usePlaceBid(auction.id);
 
-    onError: (error) => toast.error(error.message),
-
-    onSuccess: () => toast.success("Bid placed succesfully"),
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["bids-history", auction.id] });
-      queryClient.invalidateQueries({ queryKey: ["auction", auction.id] });
-    },
-  });
-
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<BidFormFields> = async (data) => {
     mutate(data);
   };
 
   return (
     <>
-      {auth.isAuthenticated && Number(auth.userId) !== auction.author.id && (
+      {auth.isAuthenticated && auth.userId !== auction.author.id && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex justify="center" mt="lg" gap="sm">
             <Controller
